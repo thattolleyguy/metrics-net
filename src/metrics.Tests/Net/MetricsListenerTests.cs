@@ -11,7 +11,7 @@ namespace metrics.Tests.Net
     {
         private MetricsListener _listener;
         private const int Port = 9898;
-        Metrics _metrics=new Metrics();
+        MetricRegistry _metrics=new MetricRegistry();
 
 
         [TestFixtureSetUp]
@@ -56,7 +56,7 @@ namespace metrics.Tests.Net
         {
             _metrics.Clear();
 
-            var counter = _metrics.Counter(typeof(MetricsListenerTests), "counter");
+            var counter = _metrics.Counter( "MetricsListenerTests.counter");
             
             counter.Increment();
 

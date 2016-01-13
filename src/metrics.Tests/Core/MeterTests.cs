@@ -10,12 +10,12 @@ namespace metrics.Tests.Core
     [TestFixture]
     public class MeterTests
     {
-        Metrics _metrics = new Metrics();
+        MetricRegistry _metrics = new MetricRegistry();
  
         [Test]
         public void Can_count()
         {
-            var meter = _metrics.Meter(typeof(MeterTests), "Can_count", "test", TimeUnit.Seconds);
+            var meter = _metrics.Meter("MeterTests.Can_count", "test", TimeUnit.Seconds);
             meter.Mark(3);
             Assert.AreEqual(3, meter.Count);
         }
@@ -25,7 +25,7 @@ namespace metrics.Tests.Core
         {
             const int count = 100000;
             var block = new ManualResetEvent(false);
-            var meter = _metrics.Meter(typeof(MeterTests), "Can_meter", "test", TimeUnit.Seconds);
+            var meter = _metrics.Meter("MeterTests.Can_meter", "test", TimeUnit.Seconds);
             Assert.IsNotNull(meter);
 
             var i = 0;

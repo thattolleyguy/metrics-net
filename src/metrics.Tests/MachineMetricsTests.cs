@@ -8,7 +8,7 @@ namespace metrics.Tests
         [Test]
         public void Can_load_all_metrics()
         {
-            var metrics = new Metrics();
+            var metrics = new MetricRegistry();
  
             metrics.Clear();
             var machineMetrics = new MachineMetrics(metrics);

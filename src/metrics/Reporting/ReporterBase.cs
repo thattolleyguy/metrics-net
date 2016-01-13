@@ -15,7 +15,7 @@ namespace metrics.Reporting
         protected CancellationTokenSource Token;
         public int Runs { get; set; }
 
-        protected ReporterBase(TextWriter writer, Metrics metrics)
+        protected ReporterBase(TextWriter writer, MetricRegistry metrics)
             : this(writer, new HumanReadableReportFormatter(metrics))
         {
             Out = writer;

@@ -9,7 +9,7 @@ namespace metrics.Tests
     {
         static void Main(string[] args)
         {
-            var db1Metrics = new Metrics();
+            var db1Metrics = new MetricRegistry();
 
             //var docsTimedCounterPerSec = db1Metrics.TimedCounter("db1", "docs new indexed/sec", "new Indexed Documents");
 
@@ -20,8 +20,8 @@ namespace metrics.Tests
             //}
             //Console.WriteLine(docsTimedCounterPerSec.CurrentValue);
          
-            var RequestsPerSecondHistogram = db1Metrics.Histogram("db1", "Request Per Second Histogram");
-            var RequestsPerSecondCounter = db1Metrics.TimedCounter("db1", "Request Per Second Counter","Request");
+            var RequestsPerSecondHistogram = db1Metrics.Histogram("db1.Request Per Second Histogram");
+            var RequestsPerSecondCounter = db1Metrics.TimedCounter( "db1.Request Per Second Counter", "Request");
             for (int i = 0; i < 100; i++)
             {
                 RequestsPerSecondCounter.Mark();

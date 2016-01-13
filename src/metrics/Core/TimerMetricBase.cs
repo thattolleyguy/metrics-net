@@ -6,16 +6,16 @@ namespace metrics.Core
 {
    public abstract class TimerMetricBase : IMetric, IMetered
    {
-      protected MeterMetric _meter;
+      protected Meter _meter;
       protected HistogramMetric _histogram;
 
       public TimerMetricBase(TimeUnit durationUnit, TimeUnit rateUnit)
-         : this(durationUnit, rateUnit, MeterMetric.New("calls", rateUnit), new HistogramMetric(HistogramMetric.SampleType.Biased), true /* clear */)
+         : this(durationUnit, rateUnit, Meter.New("calls", rateUnit), new HistogramMetric(HistogramMetric.SampleType.Biased), true /* clear */)
       {
 
       }
 
-      protected TimerMetricBase(TimeUnit durationUnit, TimeUnit rateUnit, MeterMetric meter, HistogramMetric histogram, bool clear)
+      protected TimerMetricBase(TimeUnit durationUnit, TimeUnit rateUnit, Meter meter, HistogramMetric histogram, bool clear)
       {
          DurationUnit = durationUnit;
          RateUnit = rateUnit;

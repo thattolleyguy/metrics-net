@@ -11,7 +11,7 @@ namespace metrics.Core
       public ManualTimerMetric(
          TimeUnit durationUnit, 
          TimeUnit rateUnit, 
-         MeterMetric meter, 
+         Meter meter, 
          HistogramMetric histogram, 
          bool clear)
          : base(durationUnit, rateUnit, meter, histogram, clear)

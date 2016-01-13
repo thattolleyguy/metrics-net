@@ -14,7 +14,7 @@ namespace metrics.Core
       public CallbackTimerMetric(
          TimeUnit durationUnit, 
          TimeUnit rateUnit, 
-         MeterMetric meter, 
+         Meter meter, 
          HistogramMetric histogram, 
          bool clear)
          : base(durationUnit, rateUnit, meter, histogram, clear)

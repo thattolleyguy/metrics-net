@@ -11,8 +11,8 @@ namespace metrics.Tests.Core
       public void CallbackTimerTestBasic()
       {
 
-          var metrics = new Metrics();
-         var timer = metrics.CallbackTimer(typeof(TimerTests), "CallbackTimertest", TimeUnit.Milliseconds, TimeUnit.Milliseconds);
+          var metrics = new MetricRegistry();
+         var timer = metrics.CallbackTimer("TimerTests.CallbackTimertest", TimeUnit.Milliseconds, TimeUnit.Milliseconds);
 
          for (int i = 0; i < 10; i++)
          {
@@ -28,9 +28,9 @@ namespace metrics.Tests.Core
       [Test]
       public void ManualTimerTestBasic()
       {
-          var metrics = new Metrics();
+          var metrics = new MetricRegistry();
  
-         var timer = metrics.ManualTimer(typeof(TimerTests), "|ManualTimertest", TimeUnit.Milliseconds, TimeUnit.Milliseconds);
+         var timer = metrics.ManualTimer("TimerTests.|ManualTimertest", TimeUnit.Milliseconds, TimeUnit.Milliseconds);
 
          for (int i = 0; i < 10; i++)
          {

@@ -7,12 +7,12 @@ namespace metrics
     /// </summary>
     public class MachineMetrics
     {
-        private readonly Metrics _metrics;
+        private readonly MetricRegistry _metrics;
 
         private const string TotalInstance = "_Total";
         private const string GlobalInstance = "_Global_";
 
-        public MachineMetrics(Metrics metrics)
+        public MachineMetrics(MetricRegistry metrics)
         {
             _metrics = metrics;
         }

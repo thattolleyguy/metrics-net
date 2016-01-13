@@ -12,7 +12,7 @@ namespace metrics.Tests.Reporting
     public class FileReporterTests
     {
         private string _filename;
-        private static Metrics _metrics;
+        private static MetricRegistry _metrics;
 
         [SetUp]
         public void Setup()
@@ -121,9 +121,9 @@ namespace metrics.Tests.Reporting
 
         private static void RegisterMetrics()
         {
-            _metrics = new Metrics();
+            _metrics = new MetricRegistry();
  
-            var counter = _metrics.Counter(typeof(CounterTests), "Can_run_with_known_counters_counter");
+            var counter = _metrics.Counter("CounterTests.Can_run_with_known_counters_counter");
             counter.Increment(100);
 
             var queue = new Queue<int>();

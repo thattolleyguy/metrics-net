@@ -14,9 +14,9 @@ namespace metrics.Net
         private HttpListener _listener;
         private CancellationTokenSource _task;
 
-        private readonly Metrics _metrics;
+        private readonly MetricRegistry _metrics;
 
-        public MetricsListener(Metrics metrics)
+        public MetricsListener(MetricRegistry metrics)
         {
             _metrics = metrics;
         }

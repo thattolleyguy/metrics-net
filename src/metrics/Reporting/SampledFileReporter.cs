@@ -12,13 +12,13 @@ namespace metrics.Reporting
         private readonly Encoding _encoding;
         private readonly string _directory;
 
-        public SampledFileReporter(Metrics metrics)
+        public SampledFileReporter(MetricRegistry metrics)
             : this("", Encoding.UTF8, new HumanReadableReportFormatter(metrics))
         {
 
         }
 
-        public SampledFileReporter(Encoding encoding, Metrics metrics)
+        public SampledFileReporter(Encoding encoding, MetricRegistry metrics)
             : this("", encoding, new HumanReadableReportFormatter(metrics))
         {
 
@@ -29,13 +29,13 @@ namespace metrics.Reporting
 
         }
 
-        public SampledFileReporter(string directory, Metrics metrics)
+        public SampledFileReporter(string directory, MetricRegistry metrics)
             : this(directory, Encoding.UTF8, new HumanReadableReportFormatter(metrics))
         {
             
         }
 
-        public SampledFileReporter(string directory, Encoding encoding, Metrics metrics)
+        public SampledFileReporter(string directory, Encoding encoding, MetricRegistry metrics)
             : this(directory, encoding, new HumanReadableReportFormatter(metrics))
         {
             

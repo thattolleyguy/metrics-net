@@ -11,7 +11,7 @@ namespace metrics.Tests.Reporting
     [TestFixture]
     public class SampleFileReporterTests
     {
-        private Metrics _metrics;
+        private MetricRegistry _metrics;
 
         [Test]
         public void Can_run_with_known_counters_and_human_readable_format()
@@ -116,11 +116,11 @@ namespace metrics.Tests.Reporting
 
         private void RegisterMetrics()
         {
-            _metrics = new Metrics();
+            _metrics = new MetricRegistry();
 
             _metrics.Clear();
 
-            var counter = _metrics.Counter(typeof(CounterTests), "Can_run_with_known_counters_counter");
+            var counter = _metrics.Counter("CounterTests.Can_run_with_known_counters_counter");
             counter.Increment(100);
 
             var queue = new Queue<int>();

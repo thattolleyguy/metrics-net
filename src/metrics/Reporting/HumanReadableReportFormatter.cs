@@ -7,9 +7,9 @@ namespace metrics.Reporting
 {
     public class HumanReadableReportFormatter : IReportFormatter
     {
-        private readonly Metrics _metrics;
+        private readonly MetricRegistry _metrics;
 
-        public HumanReadableReportFormatter(Metrics metrics)
+        public HumanReadableReportFormatter(MetricRegistry metrics)
         {
             _metrics = metrics;
         }
@@ -27,41 +27,36 @@ namespace metrics.Reporting
             }
             sb.AppendLine();
 
+            // TODO: Allow user to pass in ordered list of string tags to build metric heirarchy
             foreach (var entry in Utils.SortMetrics(_metrics.All))
             {
                 sb.Append(entry.Key);
                 sb.AppendLine(":");
 
-                foreach (var subEntry in entry.Value)
-                {
-                    sb.Append("  ");
-                    sb.Append(subEntry.Key);
-                    sb.AppendLine(":");
 
-                    var metric = subEntry.Value;
-                    if (metric is GaugeMetric)
-                    {
-                        WriteGauge(sb, (GaugeMetric)metric);
-                    }
-                    else if (metric is CounterMetric)
-                    {
-                        WriteCounter(sb, (CounterMetric)metric);
-                    }
-                    else if (metric is HistogramMetric)
-                    {
-                        WriteHistogram(sb, (HistogramMetric)metric);
-                    }
-                    else if (metric is MeterMetric)
-                    {
-                        WriteMetered(sb, (MeterMetric)metric);
-                    }
-                    else if (metric is TimerMetricBase)
-                    {
-                        WriteTimer(sb, (TimerMetricBase)metric);
-                    }
-                    sb.AppendLine();
+                var metric = entry.Value;
+                if (metric is GaugeMetric)
+                {
+                    WriteGauge(sb, (GaugeMetric)metric);
+                }
+                else if (metric is CounterMetric)
+                {
+                    WriteCounter(sb, (CounterMetric)metric);
+                }
+                else if (metric is HistogramMetric)
+                {
+                    WriteHistogram(sb, (HistogramMetric)metric);
+                }
+                else if (metric is Meter)
+                {
+                    WriteMetered(sb, (Meter)metric);
+                }
+                else if (metric is TimerMetricBase)
+                {
+                    WriteTimer(sb, (TimerMetricBase)metric);
                 }
                 sb.AppendLine();
+                
             }
 
             return sb.ToString();

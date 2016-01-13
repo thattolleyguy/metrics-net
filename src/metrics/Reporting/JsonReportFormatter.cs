@@ -4,9 +4,9 @@ namespace metrics.Reporting
 {
     public class JsonReportFormatter : IReportFormatter
     {
-        private readonly Metrics _metrics;
+        private readonly MetricRegistry _metrics;
 
-        public JsonReportFormatter(Metrics metrics)
+        public JsonReportFormatter(MetricRegistry metrics)
         {
             _metrics = metrics;
         }

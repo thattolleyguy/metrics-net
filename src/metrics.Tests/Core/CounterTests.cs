@@ -5,12 +5,12 @@ namespace metrics.Tests.Core
     [TestFixture]
     public class CounterTests : MetricTestBase
     {
-        Metrics _metrics = new Metrics();
+        MetricRegistry _metrics = new MetricRegistry();
 
         [Test]
         public void Can_count()
         {
-            var counter = _metrics.Counter(typeof (CounterTests), "Can_count");
+            var counter = _metrics.Counter("CounterTests.Can_count");
             Assert.IsNotNull(counter);
             
             counter.Increment(100);

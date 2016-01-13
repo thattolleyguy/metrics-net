@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace metrics.Core
 {
@@ -9,43 +10,48 @@ namespace metrics.Core
     public struct MetricName : IComparable<MetricName>
     {
         private readonly string _name;
-        private readonly string _context;
+        private readonly ImmutableDictionary<string, string> _tags;
 
         public string Name
         {
             get { return _name; }
         }
 
-        public string Context
-        {
-            get { return _context; }
-        }
 
+        [Obsolete]
         public MetricName(string context, string name)
         {
             _name = name;
-            _context = context;
+            _tags = ImmutableDictionary.Create<string, string>();
         }
 
+        public MetricName(string name)
+        {
+            _name = name;
+            _tags = ImmutableDictionary.Create<string, string>();
+           }
+
+        public MetricName(string name, Dictionary<string, string> tags)
+        {
+            _name = name;
+            _tags = tags.ToImmutableDictionary();
+        }
+
+        [Obsolete]
         public MetricName(Type @class, string name)
             : this()
         {
-            if (@class == null) throw new ArgumentNullException("class");
             if (name == null) throw new ArgumentNullException("name");
-            _context = @class.FullName;
             _name = name;
         }
-
+        //TODO: Fix the following methods
         public bool Equals(MetricName other)
         {
-            return string.Equals(Name, other.Name) && string.Equals(Context, other.Context);
+            return string.Equals(Name, other.Name);
         }
 
         public int CompareTo(MetricName other)
         {
-            var r = String.Compare(_context, other._context, StringComparison.OrdinalIgnoreCase);
-            if (r != 0)
-                return r;
             return String.Compare(_name, other._name, StringComparison.OrdinalIgnoreCase);
         }
 
@@ -69,7 +75,7 @@ namespace metrics.Core
         {
             unchecked
             {
-                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Context != null ? Context.GetHashCode() : 0);
+                return ((Name != null ? Name.GetHashCode() : 0) * 397);
             }
         }
 

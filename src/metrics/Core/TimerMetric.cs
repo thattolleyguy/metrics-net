@@ -7,7 +7,7 @@ namespace metrics.Core
 {
    /// <summary>
     /// A timer metric which aggregates timing durations and provides duration
-    /// statistics, plus throughput statistics via <see cref="MeterMetric" />.
+    /// statistics, plus throughput statistics via <see cref="Meter" />.
     /// </summary>
     public class TimerMetric : TimerMetricBase
     {
@@ -16,7 +16,7 @@ namespace metrics.Core
         {
         }
 
-        public TimerMetric(TimeUnit durationUnit, TimeUnit rateUnit, MeterMetric meter, HistogramMetric histogram, bool clear) : base(durationUnit, rateUnit, meter, histogram, clear)
+        public TimerMetric(TimeUnit durationUnit, TimeUnit rateUnit, Meter meter, HistogramMetric histogram, bool clear) : base(durationUnit, rateUnit, meter, histogram, clear)
         {
         }
 

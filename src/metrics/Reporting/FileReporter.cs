@@ -8,12 +8,12 @@ namespace metrics.Reporting
     /// </summary>
     public class FileReporter : ReporterBase
     {
-        public FileReporter(string path, Metrics metrics) : base(new StreamWriter(path, true, Encoding.UTF8),metrics)
+        public FileReporter(string path, MetricRegistry metrics) : base(new StreamWriter(path, true, Encoding.UTF8),metrics)
         {
             
         }
 
-        public FileReporter(string path, Encoding encoding, Metrics metrics)
+        public FileReporter(string path, Encoding encoding, MetricRegistry metrics)
             : base(new StreamWriter(path, true, encoding), metrics)
         {
             

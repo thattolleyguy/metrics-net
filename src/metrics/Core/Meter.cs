@@ -12,35 +12,26 @@ namespace metrics.Core
     /// A meter metric which measures mean throughput and one-, five-, and fifteen-minute exponentially-weighted moving average throughputs.
     /// </summary>
     /// <see href="http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">EMA</see>
-    public class MeterMetric : IMetric, IMetered, IDisposable
+    public class Meter : IMetric, IMetered, IDisposable
     {
-        private AtomicLong _count = new AtomicLong();
-        private long _startTime = DateTime.Now.Ticks;
-        private static readonly TimeSpan Interval = TimeSpan.FromSeconds(5);
-
         private EWMA _m1Rate = EWMA.OneMinuteEWMA();
         private EWMA _m5Rate = EWMA.FiveMinuteEWMA();
         private EWMA _m15Rate = EWMA.FifteenMinuteEWMA();
 
+        private AtomicLong _count = new AtomicLong();
+        private long _startTime = DateTime.Now.Ticks;
+        private static readonly TimeSpan Interval = TimeSpan.FromSeconds(5);
+
+
+
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
 
-        public static MeterMetric New(string eventType, TimeUnit rateUnit)
+        public Meter()
         {
-            var meter = new MeterMetric(eventType, rateUnit);
 
-            Task.Factory.StartNew(async () =>
-            {
-                while (!meter._token.IsCancellationRequested)
-                {
-                    await Task.Delay(Interval, meter._token.Token);
-                    meter.Tick();
-                }
-            }, meter._token.Token);
-
-            return meter;
         }
 
-        private MeterMetric(string eventType, TimeUnit rateUnit)
+        private Meter(string eventType, TimeUnit rateUnit)
         {
             EventType = eventType;
             RateUnit = rateUnit;
@@ -178,7 +169,7 @@ namespace metrics.Core
         {
             get
             {
-                var metric = new MeterMetric(EventType, RateUnit)
+                var metric = new Meter(EventType, RateUnit)
                 {
                     _startTime = _startTime,
                     _count = Count,
@@ -193,6 +184,15 @@ namespace metrics.Core
         public void Dispose()
         {
             _token.Cancel();
+        }
+    }
+
+    public abstract class Clock
+    {
+        public abstract long getTick();
+        public long getTime()
+        {
+
         }
     }
 }
