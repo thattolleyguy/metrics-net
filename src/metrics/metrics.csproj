@@ -65,14 +65,13 @@
     <Compile Include="Core\PerSecondCounterMetric.cs" />
     <Compile Include="Core\Reservoir.cs" />
     <Compile Include="Core\Snapshot.cs" />
-    <Compile Include="Core\TimerMetricBase.cs" />
     <Compile Include="Core\WeightedSnapshot.cs" />
     <Compile Include="MachineMetricsCategory.cs" />
     <Compile Include="Reporting\HumanReadableReportFormatter.cs" />
     <Compile Include="Reporting\IReportFormatter.cs" />
     <Compile Include="Reporting\JsonReportFormatter.cs" />
     <Compile Include="Reporting\ReporterBase.cs" />
-    <Compile Include="Core\TimerMetric.cs" />
+    <Compile Include="Core\Timer.cs" />
     <Compile Include="MachineMetrics.cs" />
     <Compile Include="Reporting\ConsoleReporter.cs" />
     <Compile Include="Reporting\IReporter.cs" />
