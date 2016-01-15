@@ -8,7 +8,7 @@ namespace metrics.Util
     {
         internal static IDictionary<string, IMetric> SortMetrics(IDictionary<MetricName, IMetric> metrics)
         {
-            var sortedMetrics = new SortedDictionary<string, IMetric>(metrics.ToDictionary(x=> x.Key.Name,x=>x.Value));
+            var sortedMetrics = new SortedDictionary<string, IMetric>(metrics.ToDictionary(x=> x.Key.Key,x=>x.Value));
             return sortedMetrics;
         }
     }

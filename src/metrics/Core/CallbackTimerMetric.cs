@@ -15,7 +15,7 @@ namespace metrics.Core
          TimeUnit durationUnit, 
          TimeUnit rateUnit, 
          Meter meter, 
-         HistogramMetric histogram, 
+         Histogram histogram, 
          bool clear)
          : base(durationUnit, rateUnit, meter, histogram, clear)
       {

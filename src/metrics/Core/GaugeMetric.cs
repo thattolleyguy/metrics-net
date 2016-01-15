@@ -22,11 +22,11 @@ namespace metrics.Core
     /// </code>
     /// </example>
     /// </summary>
-    public sealed class GaugeMetric<T> : GaugeMetric, IMetric
+    public sealed class Gauge<T> : GaugeMetric, IMetric
     {
         private readonly Func<T> _evaluator;
 
-        public GaugeMetric(Func<T> evaluator)
+        public Gauge(Func<T> evaluator)
         {
             _evaluator = evaluator;
         }
@@ -44,7 +44,7 @@ namespace metrics.Core
         [IgnoreDataMember]
         public IMetric Copy
         {
-            get { return new GaugeMetric<T>(_evaluator); }
+            get { return new Gauge<T>(_evaluator); }
         }
 
         public void LogJson(StringBuilder sb)

@@ -39,13 +39,13 @@ namespace metrics.Reporting
                 {
                     WriteGauge(sb, (GaugeMetric)metric);
                 }
-                else if (metric is CounterMetric)
+                else if (metric is Counter)
                 {
-                    WriteCounter(sb, (CounterMetric)metric);
+                    WriteCounter(sb, (Counter)metric);
                 }
-                else if (metric is HistogramMetric)
+                else if (metric is Histogram)
                 {
-                    WriteHistogram(sb, (HistogramMetric)metric);
+                    WriteHistogram(sb, (Histogram)metric);
                 }
                 else if (metric is Meter)
                 {
@@ -68,7 +68,7 @@ namespace metrics.Reporting
             sb.AppendLine(gauge.ValueAsString);
         }
 
-        protected void WriteCounter(StringBuilder sb, CounterMetric counter)
+        protected void WriteCounter(StringBuilder sb, Counter counter)
         {
             sb.Append("    count = ");
             sb.AppendLine(counter.Count.ToString());
@@ -84,7 +84,7 @@ namespace metrics.Reporting
             sb.AppendFormat("    15-minute rate = {0} {1}/{2}\n", meter.FifteenMinuteRate, meter.EventType, unit);
         }
 
-        protected void WriteHistogram(StringBuilder sb, HistogramMetric histogram)
+        protected void WriteHistogram(StringBuilder sb, Histogram histogram)
         {
             var percentiles = histogram.Percentiles(0.5, 0.75, 0.95, 0.98, 0.99, 0.999);
 

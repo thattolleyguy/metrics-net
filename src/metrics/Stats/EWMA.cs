@@ -10,31 +10,28 @@ namespace metrics.Stats
     /// <see href="http://www.teamquest.com/pdfs/whitepaper/ldavg2.pdf" />
     public class EWMA
     {
-        private static readonly double M1Second = 1 - Math.Exp(-1);
-        private static readonly double M1Alpha = 1 - Math.Exp(-5 / 60.0);
-        private static readonly double M5Alpha = 1 - Math.Exp(-5 / 60.0 / 5);
-        private static readonly double M15Alpha = 1 - Math.Exp(-5 / 60.0 / 15);
+        private static readonly int INTERVAL = 5;
+        private static readonly double SECONDS_PER_MINUTE = 60.0;
+        private static readonly int ONE_MINUTE = 1;
+        private static readonly int FIVE_MINUTES = 5;
+        private static readonly int FIFTEEN_MINUTES = 15;
 
-        private readonly AtomicLong _uncounted = new AtomicLong(0);
-        private readonly double _alpha;
-        private readonly double _interval;
+        private static readonly double M1Alpha = 1 - Math.Exp(-INTERVAL / SECONDS_PER_MINUTE / ONE_MINUTE);
+        private static readonly double M5Alpha = 1 - Math.Exp(-INTERVAL / SECONDS_PER_MINUTE / FIVE_MINUTES);
+        private static readonly double M15Alpha = 1 - Math.Exp(-INTERVAL / SECONDS_PER_MINUTE / FIFTEEN_MINUTES);
+
         private volatile bool _initialized;
         private VolatileDouble _rate;
 
-        /// <summary>
-        /// Creates a new EWMA which is equivalent to one second load average and which expects to be ticked every 1 seconds.
-        /// </summary>
-        public static EWMA OneSecondEWMA()
-        {
-            return new EWMA(M1Second, 1, TimeUnit.Seconds);
-        }
+        private readonly AtomicLong _uncounted = new AtomicLong(0);
+        private readonly double _alpha, _interval;
 
         /// <summary>
         /// Creates a new EWMA which is equivalent to the UNIX one minute load average and which expects to be ticked every 5 seconds.
         /// </summary>
         public static EWMA OneMinuteEWMA()
         {
-            return new EWMA(M1Alpha, 5, TimeUnit.Seconds);
+            return new EWMA(M1Alpha, INTERVAL, TimeUnit.Seconds);
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace metrics.Stats
         /// <returns></returns>
         public static EWMA FiveMinuteEWMA()
         {
-            return new EWMA(M5Alpha, 5, TimeUnit.Seconds);
+            return new EWMA(M5Alpha, INTERVAL, TimeUnit.Seconds);
         }
 
         /// <summary>
@@ -52,7 +49,7 @@ namespace metrics.Stats
         /// <returns></returns>
         public static EWMA FifteenMinuteEWMA()
         {
-            return new EWMA(M15Alpha, 5, TimeUnit.Seconds);
+            return new EWMA(M15Alpha, INTERVAL, TimeUnit.Seconds);
         }
 
         /// <summary>

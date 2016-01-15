@@ -7,18 +7,13 @@ namespace metrics.Core
     /// <summary>
     /// An atomic counter metric
     /// </summary>
-    public sealed class CounterMetric : IMetric
+    public sealed class Counter : IMetric
     {
-        private readonly AtomicLong _count = new AtomicLong(0);
+        private readonly AtomicLong _count;
 
-        public CounterMetric()
+        public Counter()
         {
-            
-        }
-
-        private CounterMetric(long count)
-        {
-            _count.Set(count);
+             _count = new AtomicLong(0);
         }
 
         public void Increment()
@@ -41,25 +36,9 @@ namespace metrics.Core
             _count.AddAndGet(0 - amount);
         }
 
-        public void Clear()
-        {
-            _count.Set(0);
-        }
-
         public long Count
         {
             get { return _count.Get(); }
-        }
-
-        [IgnoreDataMember]
-        public IMetric Copy
-        {
-            get { return new CounterMetric(_count.Get()); }
-        }
-
-        public void LogJson(StringBuilder sb)
-        {
-            sb.Append("{\"count\":").Append(Count).Append("}");
         }
     }
 }

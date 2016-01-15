@@ -12,36 +12,35 @@ namespace metrics.Core
     /// A meter metric which measures mean throughput and one-, five-, and fifteen-minute exponentially-weighted moving average throughputs.
     /// </summary>
     /// <see href="http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">EMA</see>
-    public class Meter : IMetric, IMetered, IDisposable
+    public class Meter : IMetered,IMetric
     {
+        private static readonly long TICK_INTERVAL = TimeUnit.Seconds.ToNanos(5);
+
         private EWMA _m1Rate = EWMA.OneMinuteEWMA();
         private EWMA _m5Rate = EWMA.FiveMinuteEWMA();
         private EWMA _m15Rate = EWMA.FifteenMinuteEWMA();
 
         private AtomicLong _count = new AtomicLong();
+        private AtomicLong _lastTick;
         private long _startTime = DateTime.Now.Ticks;
-        private static readonly TimeSpan Interval = TimeSpan.FromSeconds(5);
-
+        
 
 
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
+        private Clock clock;
 
-        public Meter()
+        public Meter():
+            this(Clock.DEFAULT)
         {
-
+              
         }
 
-        private Meter(string eventType, TimeUnit rateUnit)
+        public Meter(Clock clock)
         {
-            EventType = eventType;
-            RateUnit = rateUnit;
+            this.clock = clock;
+            this._startTime = this.clock.getTick();
+            this._lastTick = new AtomicLong(_startTime);
         }
-
-        /// <summary>
-        /// Returns the meter's rate unit
-        /// </summary>
-        /// <returns></returns>
-        public TimeUnit RateUnit { get; private set; }
 
         /// <summary>
         /// Returns the type of events the meter is measuring
@@ -49,23 +48,7 @@ namespace metrics.Core
         /// <returns></returns>
         public string EventType { get; private set; }
 
-        private void Tick()
-        {
-            _m1Rate.Tick();
-            _m5Rate.Tick();
-            _m15Rate.Tick();
-        }
 
-        public void LogJson(StringBuilder sb)
-        {
-            sb.Append("{\"count\":").Append(Count)
-              .Append(",\"rate unit\":\"").Append(RateUnit).Append("\"")
-              .Append(",\"fifteen minute rate\":").Append(FifteenMinuteRate)
-              .Append(",\"five minute rate\":").Append(FiveMinuteRate)
-              .Append(",\"one minute rate\":").Append(OneMinuteRate)
-              .Append(",\"mean rate\":").Append(MeanRate).Append("}");
-
-        }
         /// <summary>
         /// Mark the occurrence of an event
         /// </summary>
@@ -79,10 +62,33 @@ namespace metrics.Core
         /// </summary>
         public void Mark(long n)
         {
+            tickIfNecessary();
             _count.AddAndGet(n);
             _m1Rate.Update(n);
             _m5Rate.Update(n);
             _m15Rate.Update(n);
+        }
+
+        private void tickIfNecessary()
+        {
+            long oldTick = _lastTick.Get();
+            long newTick = clock.getTick();
+            long age = newTick - oldTick;
+            if(age>TICK_INTERVAL)
+            {
+                long newIntervalStartTick = newTick - age % TICK_INTERVAL;
+                if(_lastTick.CompareAndSet(oldTick,newIntervalStartTick))
+                {
+                    long requiredTicks = age / TICK_INTERVAL;
+                    for (long i = 0; i < requiredTicks;i++)
+                    {
+                        _m1Rate.Tick();
+                        _m5Rate.Tick();
+                        _m15Rate.Tick();
+                    }
+
+                }
+            }
         }
 
         /// <summary>
@@ -106,7 +112,8 @@ namespace metrics.Core
         {
             get
             {
-                return _m15Rate.Rate(RateUnit);
+                tickIfNecessary();
+                return _m15Rate.Rate(TimeUnit.Seconds);
             }
         }
 
@@ -122,9 +129,11 @@ namespace metrics.Core
         {
             get
             {
-                return _m5Rate.Rate(RateUnit);
+                return _m5Rate.Rate(TimeUnit.Seconds);
             }
         }
+
+
 
         /// <summary>
         /// Returns the mean rate at which events have occured since the meter was created
@@ -135,8 +144,8 @@ namespace metrics.Core
             {
                 if (Count != 0)
                 {
-                    var elapsed = (DateTime.Now.Ticks - _startTime) * 100; // 1 DateTime Tick == 100ns
-                    return ConvertNanosRate(Count / (double)elapsed);
+                    var elapsed = (clock.getTick() - _startTime); // 1 DateTime Tick == 100ns
+                    return Count / (double)elapsed * TimeUnit.Seconds.ToNanos(1);
                 }
                 return 0.0;
             }
@@ -155,44 +164,33 @@ namespace metrics.Core
         {
             get
             {
-                return _m1Rate.Rate(RateUnit);
+                return _m1Rate.Rate(TimeUnit.Seconds);
             }
         }
 
-        private double ConvertNanosRate(double ratePerNs)
-        {
-            return ratePerNs * RateUnit.ToNanos(1);
-        }
 
-        [IgnoreDataMember]
-        public IMetric Copy
-        {
-            get
-            {
-                var metric = new Meter(EventType, RateUnit)
-                {
-                    _startTime = _startTime,
-                    _count = Count,
-                    _m1Rate = _m1Rate,
-                    _m5Rate = _m5Rate,
-                    _m15Rate = _m15Rate
-                };
-                return metric;
-            }
-        }
 
-        public void Dispose()
-        {
-            _token.Cancel();
-        }
+
     }
 
     public abstract class Clock
     {
         public abstract long getTick();
+
+        public static readonly Clock DEFAULT = new UserTimeClock();
         public long getTime()
         {
 
+            // TODO: FIX THIS
+            return 0;
+        }
+    }
+
+    public class UserTimeClock : Clock
+    {
+        public override long getTick()
+        {
+            return DateTime.Now.Ticks;
         }
     }
 }

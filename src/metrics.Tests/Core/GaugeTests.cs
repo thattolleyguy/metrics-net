@@ -11,7 +11,7 @@ namespace metrics.Tests.Core
         public void Can_gauge_scalar_value()
         {
             var queue = new Queue<int>();
-            var gauge = new GaugeMetric<int>(() => queue.Count);
+            var gauge = new Gauge<int>(() => queue.Count);
 
             queue.Enqueue(5);
             Assert.AreEqual(1, gauge.Value);

@@ -2,17 +2,7 @@
 {
     public interface IMetered
     {
-        /// <summary>
-        /// Returns the meter's rate unit
-        /// </summary>
-        /// <returns></returns>
-        TimeUnit RateUnit { get; }
 
-        /// <summary>
-        /// Returns the type of events the meter is measuring
-        /// </summary>
-        /// <returns></returns>
-        string EventType { get; }
 
         /// <summary>
         ///  Returns the number of events which have been marked

@@ -45,7 +45,7 @@ namespace metrics.Tests
             Assert.AreEqual(0, all);
 
             _metrics.All.Add(new MetricName("CounterTests.No way this is going to get added"),
-                            new CounterMetric());
+                            new Counter());
 
             Assert.AreEqual(0, all);
         }
@@ -61,8 +61,8 @@ namespace metrics.Tests
             var value = _metrics.All[name];
 
             Assert.IsNotNull(value);
-            ((CounterMetric) value).Increment();
-            Assert.AreEqual(0, ((CounterMetric) _metrics.All[name]).Count);
+            ((Counter) value).Increment();
+            Assert.AreEqual(0, ((Counter) _metrics.All[name]).Count);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace metrics.Tests
             var counter = _metrics.Counter( "MeterTests.counter");
             Assert.IsNotNull(_metrics.All[name], "Metric not found in central registry");
             counter.Increment(10);
-            var actual = ((CounterMetric)_metrics.All[name]).Count;
+            var actual = ((Counter)_metrics.All[name]).Count;
             Assert.AreEqual(10, actual, "Immutable copy did not contain correct values for this metric");
             
             // Meter

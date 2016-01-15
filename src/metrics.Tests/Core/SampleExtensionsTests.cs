@@ -10,7 +10,7 @@ namespace metrics.Tests.Core
         [Test]
         public void NewSample_ForEachSampleType_DoesNotThrow()
         {
-            foreach(var sampleType in (HistogramMetric.SampleType[])Enum.GetValues(typeof(HistogramMetric.SampleType)))
+            foreach(var sampleType in (Histogram.SampleType[])Enum.GetValues(typeof(Histogram.SampleType)))
                 sampleType.NewSample();
         }
     }

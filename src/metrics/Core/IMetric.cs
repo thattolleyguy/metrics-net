@@ -2,9 +2,8 @@
 
 namespace metrics.Core
 {
-    public interface IMetric : ICopyable<IMetric>
+    public interface IMetric 
     {
-        void LogJson(StringBuilder sb);
     }
 }
 
