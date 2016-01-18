@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace metrics.Stats
+namespace Metrics.Stats
 {
     internal class DateTimeSupplier : IDateTimeSupplier
     {

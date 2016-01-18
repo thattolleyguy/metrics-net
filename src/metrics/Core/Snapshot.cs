@@ -5,8 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
+
+    public interface ISampling
+    {
+        Snapshot Snapshot
+        {
+            get;
+        }
+    }
     public abstract class Snapshot
     {
         public abstract double GetValue(double quantile);
@@ -39,9 +47,9 @@ namespace metrics.Core
         }
 
         public abstract long Max { get; }
-        public abstract long Mean { get; }
+        public abstract double Mean { get; }
         public abstract long Min { get; }
-        public abstract long StdDev { get; }
+        public abstract double StdDev { get; }
         public abstract void dump(Stream stream);
     }
 }

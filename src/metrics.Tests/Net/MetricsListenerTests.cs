@@ -2,11 +2,10 @@
 using System.IO;
 using System.Net;
 using NUnit.Framework;
-using metrics.Net;
 
-namespace metrics.Tests.Net
+namespace Metrics.Tests.Net
 {
-    [TestFixture]
+   /*[TestFixture]
     public class MetricsListenerTests
     {
         private MetricsListener _listener;
@@ -110,5 +109,5 @@ namespace metrics.Tests.Net
                 return null;
             }
         }
-    }
+    }*/
 }

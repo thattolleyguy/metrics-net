@@ -1,4 +1,4 @@
-namespace metrics
+namespace Metrics
 {
     /// <summary>
     /// A convenience class for installing global, machine-level metrics
@@ -7,7 +7,7 @@ namespace metrics
     /// </summary>
     public class MachineMetrics
     {
-        private readonly MetricRegistry _metrics;
+       /* private readonly MetricRegistry _metrics;
 
         private const string TotalInstance = "_Total";
         private const string GlobalInstance = "_Global_";
@@ -30,9 +30,9 @@ namespace metrics
 
             if (category.HasFlag(MachineMetricsCategory.Memory))
                 InstallClrMemory();
-        }
+        }*/
 
-        public  void InstallPhysicalDisk()
+       /* public  void InstallPhysicalDisk()
         {
             _metrics.InstallPerformanceCounterGauge("PhysicalDisk", "Current Disk Queue Length", TotalInstance, ".physical_disk.current_disk_queue_length");
             _metrics.InstallPerformanceCounterGauge("PhysicalDisk", "Avg. Disk Queue Length", TotalInstance, ".physical_disk.avg_disk_queue_length");
@@ -129,6 +129,6 @@ namespace metrics
 
             //_Global_:.NET CLR Memory:# of Pinned Objects
             //_Global_:.NET CLR Memory:# of Sink Blocks in use
-        }
+        }*/
     }
 }

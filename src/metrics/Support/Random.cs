@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Threading;
 
-namespace metrics.Support
+namespace Metrics.Support
 {
     /// <summary>
     /// Provides statistically relevant random number generation

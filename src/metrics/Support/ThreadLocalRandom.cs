@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace metrics.Support
+namespace Metrics.Support
 {
     class ThreadLocalRandom
     {

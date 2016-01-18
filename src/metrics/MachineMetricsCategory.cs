@@ -1,6 +1,6 @@
 using System;
 
-namespace metrics
+namespace Metrics
 {
     [Flags]
     public enum MachineMetricsCategory : short

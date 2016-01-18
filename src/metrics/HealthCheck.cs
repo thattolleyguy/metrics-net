@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using metrics.Core;
+using Metrics.Core;
 
-namespace metrics
+namespace Metrics
 {
     /// <summary>
     /// A template class for an encapsulated service health check

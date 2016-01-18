@@ -3,11 +3,11 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using metrics.Util;
+using Metrics.Util;
 
-namespace metrics.Net
+namespace Metrics.Net
 {
-    public class MetricsListener : IDisposable
+  /*  public class MetricsListener : IDisposable
     {
         public const string NotFoundResponse = "<!doctype html><html><body>Resource not found</body></html>";
         public const string PingResponse = "pong";
@@ -69,7 +69,7 @@ namespace metrics.Net
            // var metrics = new Metrics();
            
  
-            // TODO: parse 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            // TODO: parse 'text/html,application/xhtml+xml,application/xml;q=0.9,/*;q=0.8'
             // http://www.singular.co.nz/blog/archive/2008/07/06/finding-preferred-accept-encoding-header-in-csharp.aspx
 
             var mimeType = request.Headers["Accept"] ?? "application/json";
@@ -100,10 +100,10 @@ namespace metrics.Net
                     switch(mimeType)
                     {
                         case "text/html":
-                            WriteFinal(Serializer.Serialize(_metrics.AllSorted), response);
+                            WriteFinal(Serializer.Serialize(_metrics.Metrics), response);
                             break;
                         default: // "application/json"
-                            WriteFinal(Serializer.Serialize(_metrics.AllSorted), response);
+                            WriteFinal(Serializer.Serialize(_metrics.Metrics), response);
                             break;
                     }
                     
@@ -159,5 +159,5 @@ namespace metrics.Net
                 }
             }
         }
-    }
+    }*/
 }

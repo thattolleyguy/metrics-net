@@ -2,20 +2,20 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using NUnit.Framework;
-using metrics.Core;
-using metrics.Reporting;
+using Metrics.Core;
+using Metrics.Reporting;
 
-namespace metrics.Tests.Core
+namespace Metrics.Tests.Core
 {
     [TestFixture]
     public class MeterTests
     {
         MetricRegistry _metrics = new MetricRegistry();
- 
+
         [Test]
         public void Can_count()
         {
-            var meter = _metrics.Meter("MeterTests.Can_count", "test", TimeUnit.Seconds);
+            var meter = _metrics.Meter("MeterTests.Can_count");
             meter.Mark(3);
             Assert.AreEqual(3, meter.Count);
         }
@@ -25,21 +25,22 @@ namespace metrics.Tests.Core
         {
             const int count = 100000;
             var block = new ManualResetEvent(false);
-            var meter = _metrics.Meter("MeterTests.Can_meter", "test", TimeUnit.Seconds);
+            var meter = _metrics.Meter("MeterTests.Can_meter");
             Assert.IsNotNull(meter);
 
             var i = 0;
-            ThreadPool.QueueUserWorkItem(s => 
+            // ThreadPool.QueueUserWorkItem(s => 
+            //{
+            do
             {
-                while (i < count)
-                {
-                    meter.Mark();
-                    i++;
-                }
-                Thread.Sleep(5000); // Wait for at least one EWMA rate tick
-                block.Set();
-            });
-            block.WaitOne();
+                meter.Mark();
+                i++;
+
+            } while (i < count);
+            Thread.Sleep(5000);
+            //  block.Set();
+            //});
+            //block.WaitOne();
 
             Assert.AreEqual(count, meter.Count);
 
@@ -53,11 +54,21 @@ namespace metrics.Tests.Core
 
             Assert.IsTrue(fiveMinuteRate > 0);
             Trace.WriteLine("Five minute rate:" + meter.FiveMinuteRate);
-            
+
             Assert.IsTrue(fifteenMinuteRate > 0);
             Trace.WriteLine("Fifteen minute rate:" + meter.FifteenMinuteRate);
 
             Assert.IsTrue(meanRate > 0);
+            Thread.Sleep(30000);
+
+            Assert.IsTrue(oneMinuteRate > 0);
+            Trace.WriteLine("One minute rate:" + meter.OneMinuteRate);
+
+            Assert.IsTrue(fiveMinuteRate > 0);
+            Trace.WriteLine("Five minute rate:" + meter.FiveMinuteRate);
+
+            Assert.IsTrue(fifteenMinuteRate > 0);
+            Trace.WriteLine("Fifteen minute rate:" + meter.FifteenMinuteRate);
         }
     }
 }

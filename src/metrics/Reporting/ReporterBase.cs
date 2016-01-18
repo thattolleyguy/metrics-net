@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
     /// <summary>
     ///  A reporter that periodically prints out formatted application metrics to a specified <see cref="TextWriter" />

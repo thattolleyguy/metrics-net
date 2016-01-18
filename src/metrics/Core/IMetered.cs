@@ -1,4 +1,4 @@
-﻿namespace metrics.Core
+﻿namespace Metrics.Core
 {
     public interface IMetered
     {

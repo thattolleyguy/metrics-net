@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// A hash key for storing metrics associated by the parent class and name pair
@@ -112,7 +112,7 @@ namespace metrics.Core
          **/
         public static MetricName join(params MetricName[] parts)
         {
-            stringBuilder nameBuilder = new stringBuilder();
+            StringBuilder nameBuilder = new StringBuilder();
             Dictionary<string, string> tags = new Dictionary<string, string>();
 
             bool first = true;
@@ -139,7 +139,7 @@ namespace metrics.Core
 
             }
 
-            return new MetricName(nameBuilder.Tostring(), tags);
+            return new MetricName(nameBuilder.ToString(), tags);
         }
 
         public static MetricName build(params string[] parts)
@@ -155,7 +155,7 @@ namespace metrics.Core
 
         private static string buildName(params string[] names)
         {
-            stringBuilder builder = new stringBuilder();
+            StringBuilder builder = new StringBuilder();
             bool first = true;
 
             foreach (string name in names)
@@ -174,7 +174,7 @@ namespace metrics.Core
                 builder.Append(name);
             }
 
-            return builder.Tostring();
+            return builder.ToString();
         }
 
         public string tostring()

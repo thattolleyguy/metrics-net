@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using metrics.Stats;
+using Metrics.Stats;
 
-namespace metrics.Tests.Stats
+namespace Metrics.Tests.Stats
 {
     [TestFixture]
     public class EWMATests

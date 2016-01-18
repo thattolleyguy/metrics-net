@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace metrics.Support
+namespace Metrics.Support
 {
     /// <summary>
     /// Provides support for atomic operations around a <see cref="long" /> value

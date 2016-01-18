@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using NUnit.Framework;
 
-namespace metrics.Tests.Support
+namespace Metrics.Tests.Support
 {
     [TestFixture]
     public class RandomTests
@@ -11,7 +11,7 @@ namespace metrics.Tests.Support
         {
             for(var i = 0; i < 1000; i++)
             {
-                long random = metrics.Support.Random.NextLong();
+                long random = Metrics.Support.Random.NextLong();
                 Trace.WriteLine(random);
             }
         }

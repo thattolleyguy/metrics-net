@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
-using metrics.Support;
+using Metrics.Support;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// A marker for types that can copy themselves to another type

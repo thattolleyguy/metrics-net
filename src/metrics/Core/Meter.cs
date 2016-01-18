@@ -2,11 +2,11 @@
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using metrics.Stats;
-using metrics.Support;
+using Metrics.Stats;
+using Metrics.Support;
 using System.Text;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// A meter metric which measures mean throughput and one-, five-, and fifteen-minute exponentially-weighted moving average throughputs.
@@ -129,6 +129,7 @@ namespace metrics.Core
         {
             get
             {
+                tickIfNecessary();
                 return _m5Rate.Rate(TimeUnit.Seconds);
             }
         }
@@ -164,6 +165,7 @@ namespace metrics.Core
         {
             get
             {
+                tickIfNecessary();
                 return _m1Rate.Rate(TimeUnit.Seconds);
             }
         }
@@ -190,7 +192,7 @@ namespace metrics.Core
     {
         public override long getTick()
         {
-            return DateTime.Now.Ticks;
+            return DateTime.Now.Ticks*100;
         }
     }
 }

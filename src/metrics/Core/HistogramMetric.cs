@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using metrics.Stats;
-using metrics.Support;
+using Metrics.Stats;
+using Metrics.Support;
 using System.IO;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// A metric which calculates the distribution of a value
@@ -52,9 +52,9 @@ namespace metrics.Core
         /// </summary>
         public long Count { get { return count.Get(); } }
 
-        public Snapshot getSnapshot()
+        public Snapshot Snapshot
         {
-            return reservoir.GetSnapshot();
+            get { return reservoir.GetSnapshot(); }
         }
     }
 }

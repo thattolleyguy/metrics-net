@@ -1,7 +1,7 @@
 ﻿using System;
-using metrics.Support;
+using Metrics.Support;
 
-namespace metrics.Stats
+namespace Metrics.Stats
 {
     /// <summary>
     ///  An exponentially-weighted moving average

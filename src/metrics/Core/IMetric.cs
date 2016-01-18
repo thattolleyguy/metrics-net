@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     public interface IMetric 
     {

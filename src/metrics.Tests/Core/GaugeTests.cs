@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using metrics.Core;
+using Metrics.Core;
 using NUnit.Framework;
 
-namespace metrics.Tests.Core
+namespace Metrics.Tests.Core
 {
     [TestFixture]
     public class GaugeTests : MetricTestBase
@@ -29,7 +29,7 @@ namespace metrics.Tests.Core
         {
             var queue = new Queue<int>();
             var metrics = new MetricRegistry();
-            var gauge = metrics.Gauge(typeof(GaugeTests), "Can_use_gauge_metric", () => queue.Count);
+            var gauge = metrics.Gauge("GaugeTests", () => queue.Count);
             queue.Enqueue(5);
             Assert.AreEqual(1, gauge.Value);
         }

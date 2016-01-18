@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
     /// <summary>
     /// A file-based reporter that produces a timestamped-suffixed output file for each sample collection

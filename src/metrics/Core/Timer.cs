@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     public class Context : IDisposable
     {
@@ -66,7 +66,7 @@ namespace metrics.Core
     /// A timer metric which aggregates timing durations and provides duration
     /// statistics, plus throughput statistics via <see cref="Meter" />.
     /// </summary>
-    public class Timer : IMetric
+    public class Timer : IMetric, IMetered, ISampling
     {
         private readonly Meter meter;
         private readonly Histogram histogram;
@@ -142,7 +142,7 @@ namespace metrics.Core
 
         public double OneMinuteRate { get { return meter.OneMinuteRate; } }
 
-        public Snapshot Snapshot { get { return histogram.getSnapshot(); } }
+        public Snapshot Snapshot { get { return histogram.Snapshot; } }
 
     }
 }

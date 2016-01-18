@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
     interface IReporter : IDisposable
     {

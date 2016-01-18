@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
     
     public class ConsoleReporter : ReporterBase

@@ -67,9 +67,6 @@
     <Compile Include="Core\HistogramMetricTests.cs" />
     <Compile Include="Core\MeterTests.cs" />
     <Compile Include="Core\MetricTestBase.cs" />
-    <Compile Include="Core\SampleExtensionsTests.cs" />
-    <Compile Include="Core\TimerTests.cs" />
-    <Compile Include="MachineMetricsTests.cs" />
     <Compile Include="MetricsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\CounterTests.cs" />
@@ -78,7 +75,6 @@
     <Compile Include="Reporting\JsonReportFormatterTests.cs" />
     <Compile Include="Reporting\SampleFileReporterTests.cs" />
     <Compile Include="Stats\EWMATests.cs" />
-    <Compile Include="Stats\LimitedTimeSampleTests.cs" />
     <Compile Include="Support\RandomTests.cs" />
     <Compile Include="Support\VolatileDoubleTests.cs" />
     <Compile Include="TimeUnitTests.cs" />

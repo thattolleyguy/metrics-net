@@ -2,11 +2,11 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using metrics.Core;
+using Metrics.Core;
 using NUnit.Framework;
-using metrics.Util;
+using Metrics.Util;
 
-namespace metrics.Tests.Core
+namespace Metrics.Tests.Core
 {
     [TestFixture]
     public class CLRProfilerTests

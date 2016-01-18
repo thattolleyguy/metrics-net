@@ -1,4 +1,4 @@
-﻿namespace metrics.Reporting
+﻿namespace Metrics.Reporting
 {
     public interface IReportFormatter
     {

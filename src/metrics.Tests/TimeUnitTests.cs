@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using NUnit.Framework;
 
-namespace metrics.Tests
+namespace Metrics.Tests
 {
     [TestFixture]
     public class TimeUnitTests

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using metrics.Core;
+using Metrics.Core;
 
-namespace metrics.Util
+namespace Metrics.Util
 {
     public static class Serializer
     {
         public static Func<IEnumerable<CLRProfiler.ThreadInfo>, string> SerializeThreads = o => o.ToString();
 
-        public static Func<IDictionary<MetricName, IMetric>, string> Serialize = metrics =>
+       /* public static Func<IDictionary<MetricName, IMetric>, string> Serialize = metrics =>
         {
             var sb = new StringBuilder("[");
 
@@ -27,7 +27,7 @@ namespace metrics.Util
             sb.Append("]");
 
             return sb.ToString();
-        };
+        };*/
 
     }
 }

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace metrics.Tests.Core
+namespace Metrics.Tests.Core
 {
     public class MetricTestBase
     {

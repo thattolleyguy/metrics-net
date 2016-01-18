@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     public class WeightedSample
     {
@@ -85,7 +85,7 @@ namespace metrics.Core
          * @param quantile    a given quantile, in {@code [0..1]}
          * @return the value in the distribution at {@code quantile}
          */
-        public double getValue(double quantile)
+        public override double GetValue(double quantile)
         {
             if (quantile < 0.0 || quantile > 1.0 || Double.IsNaN(quantile))
             {
@@ -119,9 +119,9 @@ namespace metrics.Core
          *
          * @return the number of values
          */
-        public int size()
+        public override int Size
         {
-            return values.Length;
+            get { return values.Length; }
         }
 
         /**
@@ -130,11 +130,14 @@ namespace metrics.Core
          * @return the entire set of values
          */
 
-        public long[] getValues()
+        public override long[] Values
         {
-            long[] dest = new long[values.Length];
-            Array.Copy(values, dest, values.Length);
-            return dest;
+            get
+            {
+                long[] dest = new long[values.Length];
+                Array.Copy(values, dest, values.Length);
+                return dest;
+            }
         }
 
         /**
@@ -143,13 +146,16 @@ namespace metrics.Core
          * @return the highest value
          */
 
-        public long getMax()
+        public override long Max
         {
-            if (values.Length == 0)
+            get
             {
-                return 0;
+                if (values.Length == 0)
+                {
+                    return 0;
+                }
+                return values[values.Length - 1];
             }
-            return values[values.Length - 1];
         }
 
         /**
@@ -158,13 +164,16 @@ namespace metrics.Core
          * @return the lowest value
          */
 
-        public long getMin()
+        public override long Min
         {
-            if (values.Length == 0)
+            get
             {
-                return 0;
+                if (values.Length == 0)
+                {
+                    return 0;
+                }
+                return values[0];
             }
-            return values[0];
         }
 
         /**
@@ -173,19 +182,22 @@ namespace metrics.Core
          * @return the weighted arithmetic mean
          */
 
-        public double getMean()
+        public override double Mean
         {
-            if (values.Length == 0)
+            get
             {
-                return 0;
-            }
+                if (values.Length == 0)
+                {
+                    return 0;
+                }
 
-            double sum = 0;
-            for (int i = 0; i < values.Length; i++)
-            {
-                sum += values[i] * normWeights[i];
+                double sum = 0;
+                for (int i = 0; i < values.Length; i++)
+                {
+                    sum += values[i] * normWeights[i];
+                }
+                return sum;
             }
-            return sum;
         }
 
         /**
@@ -194,25 +206,27 @@ namespace metrics.Core
          * @return the weighted standard deviation value
          */
 
-        public double getStdDev()
+        public override double StdDev
         {
             // two-pass algorithm for variance, avoids numeric overflow
-
-            if (values.Length <= 1)
+            get
             {
-                return 0;
+                if (values.Length <= 1)
+                {
+                    return 0;
+                }
+
+                double mean = Mean;
+                double variance = 0;
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    double diff = values[i] - mean;
+                    variance += normWeights[i] * diff * diff;
+                }
+
+                return Math.Sqrt(variance);
             }
-
-            double mean = getMean();
-            double variance = 0;
-
-            for (int i = 0; i < values.Length; i++)
-            {
-                double diff = values[i] - mean;
-                variance += normWeights[i] * diff * diff;
-            }
-
-            return Math.Sqrt(variance);
         }
 
         /**

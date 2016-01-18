@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
-using metrics.Core;
+using Metrics.Core;
 
-namespace metrics.Tests
+namespace Metrics.Tests
 {
     public class Tryout
     {
@@ -20,8 +20,7 @@ namespace metrics.Tests
             //}
             //Console.WriteLine(docsTimedCounterPerSec.CurrentValue);
          
-            var RequestsPerSecondHistogram = db1Metrics.Histogram("db1.Request Per Second Histogram");
-            var RequestsPerSecondCounter = db1Metrics.TimedCounter( "db1.Request Per Second Counter", "Request");
+            /*var RequestsPerSecondHistogram = db1Metrics.Histogram("db1.Request Per Second Histogram");
             for (int i = 0; i < 100; i++)
             {
                 RequestsPerSecondCounter.Mark();
@@ -36,7 +35,7 @@ namespace metrics.Tests
             Console.WriteLine(sb);
             Console.WriteLine(RequestsPerSecondHistogram.Percentiles(0.5, 0.75, 0.95, 0.98, 0.99, 0.999));
            // RequestsPerSecondHistogram.Update((long)documentDatabase.WorkContext.MetricsCounters.RequestsPerSecondCounter.CurrentValue); //??
-
+           */
         } 
     }
 }

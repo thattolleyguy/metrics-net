@@ -1,8 +1,8 @@
-using metrics.Util;
+using Metrics.Util;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
-    public class JsonReportFormatter : IReportFormatter
+    /*public class JsonReportFormatter : IReportFormatter
     {
         private readonly MetricRegistry _metrics;
 
@@ -13,7 +13,7 @@ namespace metrics.Reporting
 
         public string GetSample()
         {
-            return Serializer.Serialize(_metrics.AllSorted);
+            return Serializer.Serialize(_metrics.Metrics);
         }
-    }
+    }*/
 }

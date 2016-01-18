@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using metrics.Core;
+using Metrics.Core;
 using System.Linq;
 
-namespace metrics.Util
+namespace Metrics.Util
 {
     internal static class Utils
     {

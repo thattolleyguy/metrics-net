@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace metrics.Reporting
+namespace Metrics.Reporting
 {
     /// <summary>
     /// A file-based reporter that outputs formatted metrics to a single flat file

@@ -1,4 +1,4 @@
-﻿using metrics.Support;
+﻿using Metrics.Support;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     public interface Reservoir
     {
@@ -194,9 +194,12 @@ namespace metrics.Core
                     var keys = new List<double>(_values.Keys);
                     foreach (double key in keys)
                     {
-                        WeightedSample sample = _values.(key);
-                        WeightedSample newSample = new WeightedSample(sample.value, sample.weight * scalingFactor);
-                        _values.AddOrUpdate(key * scalingFactor, newSample, (k, v) => v);
+                        WeightedSample sample = null;
+                        if (_values.TryRemove(key, out sample))
+                        {
+                            WeightedSample newSample = new WeightedSample(sample.value, sample.weight * scalingFactor);
+                            _values.AddOrUpdate(key * scalingFactor, newSample, (k, v) => v);
+                        }
                     }
                 }
                 finally

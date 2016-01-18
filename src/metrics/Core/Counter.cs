@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 using System.Text;
-using metrics.Support;
+using Metrics.Support;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// An atomic counter metric

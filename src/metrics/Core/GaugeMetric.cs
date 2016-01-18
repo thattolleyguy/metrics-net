@@ -2,13 +2,18 @@
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// An untyped version of a gauge for reporting purposes
     /// </summary>
-    public abstract class GaugeMetric
+    public abstract class Gauge : IMetric
     {
+        private Type type;
+        public Gauge(Type type)
+        {
+            this.type = type;
+        }
         public abstract string ValueAsString { get; }
     }
 
@@ -22,11 +27,11 @@ namespace metrics.Core
     /// </code>
     /// </example>
     /// </summary>
-    public sealed class Gauge<T> : GaugeMetric, IMetric
+    public sealed class Gauge<T> : Gauge
     {
         private readonly Func<T> _evaluator;
 
-        public Gauge(Func<T> evaluator)
+        public Gauge(Func<T> evaluator) : base(typeof(T))
         {
             _evaluator = evaluator;
         }
@@ -50,7 +55,7 @@ namespace metrics.Core
         public void LogJson(StringBuilder sb)
         {
             sb.Append("{\"value\":").Append(Value).Append("}");
-     
+
         }
     }
 }

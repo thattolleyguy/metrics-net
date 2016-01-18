@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using metrics.Support;
+using Metrics.Support;
 using NUnit.Framework;
 
-namespace metrics.Tests.Support
+namespace Metrics.Tests.Support
 {
     [TestFixture]
     public class VolatileDoubleTests

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace metrics
+namespace Metrics
 {
     /// <summary>
     /// Provides support for timing values

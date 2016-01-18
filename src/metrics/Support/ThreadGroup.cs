@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace metrics.Support
+namespace Metrics.Support
 {
     /// <summary>
     /// Provides a thread group for tracking

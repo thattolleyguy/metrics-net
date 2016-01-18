@@ -5,9 +5,9 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading;
-using metrics.Util;
+using Metrics.Util;
 
-namespace metrics.Core
+namespace Metrics.Core
 {
     /// <summary>
     /// A wrapper around available .NET performance counters
