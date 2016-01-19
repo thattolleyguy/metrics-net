@@ -12,7 +12,7 @@ namespace Metrics.Core
     /// A meter metric which measures mean throughput and one-, five-, and fifteen-minute exponentially-weighted moving average throughputs.
     /// </summary>
     /// <see href="http://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">EMA</see>
-    public class Meter : IMetered,IMetric
+    public class Meter : IMetered, IMetric
     {
         private static readonly long TICK_INTERVAL = TimeUnit.Seconds.ToNanos(5);
 
@@ -23,16 +23,16 @@ namespace Metrics.Core
         private AtomicLong _count = new AtomicLong();
         private AtomicLong _lastTick;
         private long _startTime = DateTime.Now.Ticks;
-        
+
 
 
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
         private Clock clock;
 
-        public Meter():
+        public Meter() :
             this(Clock.DEFAULT)
         {
-              
+
         }
 
         public Meter(Clock clock)
@@ -74,13 +74,13 @@ namespace Metrics.Core
             long oldTick = _lastTick.Get();
             long newTick = clock.getTick();
             long age = newTick - oldTick;
-            if(age>TICK_INTERVAL)
+            if (age > TICK_INTERVAL)
             {
                 long newIntervalStartTick = newTick - age % TICK_INTERVAL;
-                if(_lastTick.CompareAndSet(oldTick,newIntervalStartTick))
+                if (_lastTick.CompareAndSet(oldTick, newIntervalStartTick))
                 {
                     long requiredTicks = age / TICK_INTERVAL;
-                    for (long i = 0; i < requiredTicks;i++)
+                    for (long i = 0; i < requiredTicks; i++)
                     {
                         _m1Rate.Tick();
                         _m5Rate.Tick();
@@ -182,9 +182,7 @@ namespace Metrics.Core
         public static readonly Clock DEFAULT = new UserTimeClock();
         public long getTime()
         {
-
-            // TODO: FIX THIS
-            return 0;
+            return DateTime.Now.Ticks / 10;
         }
     }
 
@@ -192,7 +190,7 @@ namespace Metrics.Core
     {
         public override long getTick()
         {
-            return DateTime.Now.Ticks*100;
+            return DateTime.Now.Ticks * 100;
         }
     }
 }

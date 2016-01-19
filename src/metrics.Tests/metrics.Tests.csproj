@@ -67,6 +67,7 @@
     <Compile Include="Core\HistogramMetricTests.cs" />
     <Compile Include="Core\MeterTests.cs" />
     <Compile Include="Core\MetricTestBase.cs" />
+    <Compile Include="Core\TimerTests.cs" />
     <Compile Include="MetricsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\CounterTests.cs" />

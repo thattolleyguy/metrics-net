@@ -11,9 +11,9 @@ namespace Metrics.Core
 {
     public interface Reservoir
     {
-        int Size();
+        int Size { get; }
         void Update(long value);
-        Snapshot GetSnapshot();
+        Snapshot Snapshot { get; }
     }
 
     /// <summary>
@@ -68,9 +68,9 @@ namespace Metrics.Core
 
         }
 
-        public int Size()
+        public int Size
         {
-            return _size;
+            get { return _size; }
         }
 
         /// <summary>
@@ -133,16 +133,19 @@ namespace Metrics.Core
             }
         }
 
-        public Snapshot GetSnapshot()
+        public Snapshot Snapshot
         {
-            lockForRegularUsage();
-            try
+            get
             {
-                return new WeightedSnapshot(_values.Values);
-            }
-            finally
-            {
-                unlockForRegularUsage();
+                lockForRegularUsage();
+                try
+                {
+                    return new WeightedSnapshot(_values.Values);
+                }
+                finally
+                {
+                    unlockForRegularUsage();
+                }
             }
         }
 

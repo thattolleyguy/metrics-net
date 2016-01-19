@@ -11,6 +11,7 @@ namespace Metrics
 {
 
     public delegate bool MetricFilter(MetricName name, IMetric metric);
+
     /// <summary>
     /// A set of factory methods for creating centrally registered metric instances
     /// </summary>
@@ -296,7 +297,7 @@ namespace Metrics
 
         private IDictionary<MetricName, T> getMetrics<T>(MetricFilter filter) where T : IMetric
         {
-            MetricFilter finalFilter = filter + ((name, metric) => metric.GetType().IsSubclassOf(typeof(T)));
+            MetricFilter finalFilter = filter + ((name, metric) => metric is T);
             IDictionary<MetricName, T> retVal = new Dictionary<MetricName, T>();
             foreach (KeyValuePair<MetricName, IMetric> kv in metrics)
             {

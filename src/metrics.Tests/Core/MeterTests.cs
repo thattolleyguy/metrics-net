@@ -59,16 +59,7 @@ namespace Metrics.Tests.Core
             Trace.WriteLine("Fifteen minute rate:" + meter.FifteenMinuteRate);
 
             Assert.IsTrue(meanRate > 0);
-            Thread.Sleep(30000);
-
-            Assert.IsTrue(oneMinuteRate > 0);
-            Trace.WriteLine("One minute rate:" + meter.OneMinuteRate);
-
-            Assert.IsTrue(fiveMinuteRate > 0);
-            Trace.WriteLine("Five minute rate:" + meter.FiveMinuteRate);
-
-            Assert.IsTrue(fifteenMinuteRate > 0);
-            Trace.WriteLine("Fifteen minute rate:" + meter.FifteenMinuteRate);
+            Trace.WriteLine("Mean rate:" + meter.MeanRate);
         }
     }
 }

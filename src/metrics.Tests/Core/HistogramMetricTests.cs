@@ -6,7 +6,7 @@ using Metrics.Stats;
 namespace Metrics.Tests.Core
 {
     [TestFixture]
-    public class HistogramMetricTests
+    public class HistogramTests
     {
         [Test]
         public void Max_WhenPassed8And9_Returns9()
@@ -43,5 +43,20 @@ namespace Metrics.Tests.Core
             underTest.Update(8);
             Assert.AreEqual(8.5, underTest.Snapshot.Mean);
         }
+
+
+        [Test]
+        public void ValidateMeanAndMedianDifferent()
+        {
+            var underTest = new Histogram(new ExponentiallyDecayingReservoir());
+            underTest.Update(7);
+            underTest.Update(8);
+            underTest.Update(12);
+
+            Assert.AreEqual(8, underTest.Snapshot.Median);
+            Assert.AreNotEqual(8, underTest.Snapshot.Mean);
+            
+        }
+
     }
 }

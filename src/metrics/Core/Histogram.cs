@@ -54,7 +54,7 @@ namespace Metrics.Core
 
         public Snapshot Snapshot
         {
-            get { return reservoir.GetSnapshot(); }
+            get { return reservoir.Snapshot; }
         }
     }
 }

@@ -160,7 +160,7 @@ namespace Metrics.Core
 
             foreach (string name in names)
             {
-                if (name == null || name.Length==0)
+                if (name == null || name.Length == 0)
                     continue;
 
                 if (first)
@@ -177,9 +177,9 @@ namespace Metrics.Core
             return builder.ToString();
         }
 
-        public string tostring()
+        public override string ToString()
         {
-            if (_tags.Count==0)
+            if (_tags.Count == 0)
             {
                 return _key;
             }
@@ -199,7 +199,6 @@ namespace Metrics.Core
                 return result;
             }
         }
-        //TODO: Fix the following methods
         public override bool Equals(object obj)
         {
             if (this == obj)
@@ -234,10 +233,10 @@ namespace Metrics.Core
 
             int c = CompareName(_key, o._key);
 
-            //if (c != 0)
+            if (c != 0)
                 return c;
 
-            //return CompareTags(_tags, o._tags);
+            return CompareTags(_tags, o._tags);
         }
 
         private int CompareName(string left, string right)
@@ -255,7 +254,7 @@ namespace Metrics.Core
         }
 
 
-       /* private int compareTags(IDictionary<string, string> left, IDictionary<string, string> right)
+        private int CompareTags(IDictionary<string, string> left, IDictionary<string, string> right)
         {
             if (left == null && right == null)
                 return 0;
@@ -266,12 +265,12 @@ namespace Metrics.Core
             if (right == null)
                 return -1;
 
-            const Iterable< string > keys = uniqueSortedKeys(left, right);
+            SortedSet<string> keys = uniqueSortedKeys(left, right);
 
-            for (final string key : keys)
+            foreach (string key in keys)
             {
-                final string a = left.get(key);
-                final string b = right.get(key);
+                string a = left.ContainsKey(key) ? left[key] : null;
+                string b = right.ContainsKey(key) ? right[key] : null;
 
                 if (a == null && b == null)
                     continue;
@@ -282,14 +281,22 @@ namespace Metrics.Core
                 if (b == null)
                     return 1;
 
-                int c = a.compareTo(b);
+                int c = a.CompareTo(b);
 
                 if (c != 0)
                     return c;
             }
 
             return 0;
-        }*/
+        }
+
+        private SortedSet<string> uniqueSortedKeys(IDictionary<string, string> left, IDictionary<string, string> right)
+        {
+            SortedSet<string> set = new SortedSet<string>(left.Keys);
+            set.UnionWith(right.Keys);
+            return set;
+        }
+
 
         public static bool operator ==(MetricName x, MetricName y)
         {
@@ -300,7 +307,7 @@ namespace Metrics.Core
         {
             return !(x == y);
         }
-        
+
         public static MetricName name(Type @class, params string[] names)
         {
             return name(@class.Name, names);
@@ -331,7 +338,7 @@ namespace Metrics.Core
 
 
 
-      
+
 
     }
 }
