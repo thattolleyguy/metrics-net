@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CachedGauge.cs" />
     <Compile Include="Core\Histogram.cs" />
     <Compile Include="Core\Reservoir.cs" />
     <Compile Include="Core\Snapshot.cs" />

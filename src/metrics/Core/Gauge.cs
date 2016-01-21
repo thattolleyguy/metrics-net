@@ -27,7 +27,7 @@ namespace Metrics.Core
     /// </code>
     /// </example>
     /// </summary>
-    public sealed class Gauge<T> : Gauge
+    public class Gauge<T> : Gauge
     {
         private readonly Func<T> _evaluator;
 
