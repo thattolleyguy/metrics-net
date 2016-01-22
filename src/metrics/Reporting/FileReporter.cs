@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Metrics.Core;
+using System.IO;
 using System.Text;
 
 namespace Metrics.Reporting

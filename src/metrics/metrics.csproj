@@ -8,8 +8,8 @@
     <ProjectGuid>{3FBA902F-4F7E-434D-BE22-89C162B6F92D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>metrics</RootNamespace>
-    <AssemblyName>metrics</AssemblyName>
+    <RootNamespace>Metrics</RootNamespace>
+    <AssemblyName>Metrics</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\lib\net40\metrics.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\lib\net40\Metrics.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
@@ -63,8 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Clock.cs" />
     <Compile Include="Core\CachedGauge.cs" />
-    <Compile Include="Core\EvaluatorGauge.cs" />
+    <Compile Include="Core\DerivativeGauge.cs" />
     <Compile Include="Core\Histogram.cs" />
     <Compile Include="Core\ICounted.cs" />
     <Compile Include="Core\Reservoir.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Support\Volatile.cs" />
     <Compile Include="Support\VolatileDouble.cs" />
     <Compile Include="Support\AtomicLong.cs" />
-    <Compile Include="Core\CLRProfiler.cs" />
+    <Compile Include="Util\CLRProfiler.cs" />
     <Compile Include="Core\Counter.cs" />
     <Compile Include="Core\Gauge.cs" />
     <Compile Include="HealthCheck.cs" />

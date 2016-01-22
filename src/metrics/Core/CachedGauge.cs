@@ -22,20 +22,18 @@ namespace Metrics.Core
         /// <param name="timeout"> the timeout</param>
         /// <param name="timeoutUnit">the unit of { @code timeout }</param>
         /// <param name="evaluator"></param>
-
-
         protected CachedGauge(long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : this(Clock.DEFAULT, timeout, timeoutUnit, evaluator)
         {
 
         }
 
-        /**
-         * Creates a new cached gauge with the given clock and timeout period.
-         *
-         * @param clock          the clock used to calculate the timeout
-         * @param timeout        the timeout
-         * @param timeoutUnit    the unit of {@code timeout}
-         */
+        /// <summary>
+        /// Creates a new cached gauge with the given clock and timeout period.
+        /// </summary>
+        /// <param name="clock">the clock used to calculate the timeout</param>
+        /// <param name="timeout">the timeout</param>
+        /// <param name="timeoutUnit">the unit of {@code timeout}</param>
+        /// <param name="evaluator"></param>
         protected CachedGauge(Clock clock, long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : base(evaluator)
         {
             this.clock = clock;
@@ -43,13 +41,11 @@ namespace Metrics.Core
             this.timeoutNS = timeoutUnit.ToNanos(timeout);
         }
 
-        /**
-         * Loads the value and returns it.
-         *
-         * @return the new value
-         */
 
-
+        /// <summary>
+        /// Loads the value and returns it.
+        /// </summary>
+        /// <returns>the new value</returns>
         public T getValue()
         {
             if (shouldLoad())
