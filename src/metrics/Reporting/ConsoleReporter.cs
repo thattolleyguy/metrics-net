@@ -1,6 +1,7 @@
 ﻿using Metrics.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace Metrics.Reporting
@@ -18,12 +19,10 @@ namespace Metrics.Reporting
 
         private readonly TextWriter output;
         private readonly Clock clock;
-        //private readonly DateFormat dateFormat;
 
         private ConsoleReporter(MetricRegistry registry,
                                 TextWriter output,
                                 Clock clock,
-                                TimeZone timeZone,
                                 TimeUnit rateUnit,
                                 TimeUnit durationUnit,
                                 MetricFilter filter) :
@@ -31,17 +30,14 @@ namespace Metrics.Reporting
         {
             this.output = output;
             this.clock = clock;
-            /* this.dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                                                              DateFormat.MEDIUM,
-                                                              locale);
-             dateFormat.setTimeZone(timeZone);*/
+
         }
 
         public override void report(IDictionary<MetricName, Gauge> gauges,
-                             IDictionary<MetricName, Counter> counters,
-                             IDictionary<MetricName, Histogram> histograms,
-                             IDictionary<MetricName, Meter> meters,
-                             IDictionary<MetricName, Timer> timers)
+                              IDictionary<MetricName, Counter> counters,
+                              IDictionary<MetricName, Histogram> histograms,
+                              IDictionary<MetricName, Meter> meters,
+                              IDictionary<MetricName, Timer> timers)
         {
             printWithBanner(DateTime.Now.ToString(), '=');
             output.WriteLine();
@@ -177,7 +173,6 @@ namespace Metrics.Reporting
             private readonly MetricRegistry registry;
             private TextWriter output;
             private Clock clock;
-            private TimeZone timeZone;
             private TimeUnit rateUnit;
             private TimeUnit durationUnit;
             private MetricFilter filter;
@@ -203,8 +198,6 @@ namespace Metrics.Reporting
                 this.output = output;
                 return this;
             }
-
-
 
             /**
              * Use the given {@link Clock} instance for the time.
@@ -265,7 +258,6 @@ namespace Metrics.Reporting
                 return new ConsoleReporter(registry,
                                            output,
                                            clock,
-                                           timeZone,
                                            rateUnit,
                                            durationUnit,
                                            filter);

@@ -76,16 +76,15 @@
     <Compile Include="Reporting\JsonReportFormatterTests.cs" />
     <Compile Include="Reporting\SampleFileReporterTests.cs" />
     <Compile Include="Stats\EWMATests.cs" />
-    <Compile Include="Support\RandomTests.cs" />
     <Compile Include="Support\VolatileDoubleTests.cs" />
     <Compile Include="TimeUnitTests.cs" />
     <Compile Include="Net\MetricsListenerTests.cs" />
     <Compile Include="Tryout.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\metrics\Metrics.csproj">
+    <ProjectReference Include="..\metrics\Metrics.Core.csproj">
       <Project>{3FBA902F-4F7E-434D-BE22-89C162B6F92D}</Project>
-      <Name>Metrics</Name>
+      <Name>Metrics.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

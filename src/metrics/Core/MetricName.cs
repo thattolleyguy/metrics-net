@@ -201,7 +201,9 @@ namespace Metrics.Core
         }
         public override bool Equals(object obj)
         {
+#pragma warning disable CS0253 // Possible unintended reference comparison; right hand side needs cast
             if (this == obj)
+#pragma warning restore CS0253 // Possible unintended reference comparison; right hand side needs cast
                 return true;
 
             if (obj == null)
