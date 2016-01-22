@@ -83,9 +83,9 @@
     <Compile Include="Tryout.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\metrics\metrics.csproj">
+    <ProjectReference Include="..\metrics\Metrics.csproj">
       <Project>{3FBA902F-4F7E-434D-BE22-89C162B6F92D}</Project>
-      <Name>metrics</Name>
+      <Name>Metrics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

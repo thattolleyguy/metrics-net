@@ -45,17 +45,5 @@ namespace Metrics.Core
         {
             get { return Value.ToString(); }
         }
-
-        [IgnoreDataMember]
-        public IMetric Copy
-        {
-            get { return new Gauge<T>(_evaluator); }
-        }
-
-        public void LogJson(StringBuilder sb)
-        {
-            sb.Append("{\"value\":").Append(Value).Append("}");
-
-        }
     }
 }

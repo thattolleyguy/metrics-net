@@ -1,14 +1,15 @@
 ﻿namespace Metrics.Core
 {
-    public interface IMetered
+    /// <summary>
+    /// An object which maintains mean and exponentially-weighted rate.
+    /// </summary>
+    public interface IMetered : ICounted
     {
-
-
         /// <summary>
         ///  Returns the number of events which have been marked
         /// </summary>
         /// <returns></returns>
-        long Count { get; }
+        new long Count { get; }
 
         /// <summary>
         /// Returns the fifteen-minute exponentially-weighted moving average rate at

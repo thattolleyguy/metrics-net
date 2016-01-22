@@ -13,7 +13,7 @@ namespace Metrics.Core
     /// A metric which calculates the distribution of a value
     /// <see href="http://www.johndcook.com/standard_deviation.html">Accurately computing running variance</see>
     /// </summary>
-    public class Histogram : IMetric
+    public class Histogram : IMetric,ICounted
     {
         private readonly Reservoir reservoir;
         private readonly AtomicLong count;

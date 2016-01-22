@@ -7,7 +7,7 @@ using Metrics.Reporting;
 using Metrics.Support;
 using System.Collections.Immutable;
 
-namespace Metrics
+namespace Metrics.Core
 {
 
     public delegate bool MetricFilter(MetricName name, IMetric metric);

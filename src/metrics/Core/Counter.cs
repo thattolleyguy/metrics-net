@@ -7,7 +7,7 @@ namespace Metrics.Core
     /// <summary>
     /// An atomic counter metric
     /// </summary>
-    public sealed class Counter : IMetric
+    public sealed class Counter : IMetric,ICounted
     {
         private readonly AtomicLong _count;
 

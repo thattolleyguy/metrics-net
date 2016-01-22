@@ -16,15 +16,17 @@ namespace Metrics.Core
         private readonly long timeoutNS;
         private T value;
 
-        /**
-         * Creates a new cached gauge with the given timeout period.
-         *
-         * @param timeout        the timeout
-         * @param timeoutUnit    the unit of {@code timeout}
-         */
+        /// <summary>
+        /// Creates a new cached gauge with the given timeout period.
+        /// </summary>
+        /// <param name="timeout"> the timeout</param>
+        /// <param name="timeoutUnit">the unit of { @code timeout }</param>
+        /// <param name="evaluator"></param>
+
+
         protected CachedGauge(long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : this(Clock.DEFAULT, timeout, timeoutUnit, evaluator)
         {
-           
+
         }
 
         /**
@@ -34,7 +36,7 @@ namespace Metrics.Core
          * @param timeout        the timeout
          * @param timeoutUnit    the unit of {@code timeout}
          */
-        protected CachedGauge(Clock clock, long timeout, TimeUnit timeoutUnit, Func<T> evaluator):base(evaluator)
+        protected CachedGauge(Clock clock, long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : base(evaluator)
         {
             this.clock = clock;
             this.reloadAt = new AtomicLong(0);
@@ -46,7 +48,7 @@ namespace Metrics.Core
          *
          * @return the new value
          */
-        
+
 
         public T getValue()
         {
