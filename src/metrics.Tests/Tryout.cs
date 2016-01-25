@@ -13,27 +13,28 @@ namespace Metrics.Tests
         {
             var db1Metrics = new MetricRegistry();
             var reporter = ConsoleReporter.ForRegistry(db1Metrics).build();
-            //var meter = db1Metrics.Meter("testMeter");
+            var meter = db1Metrics.Meter("testMeter");
             var randomHist = db1Metrics.Histogram("testHist");
             //var machineMetrics = MachineMetrics.Create(MachineMetricsCategory.All);
             //db1Metrics.Register("MachineMetrics", machineMetrics);
 
             reporter.Start(1, TimeUnit.Seconds);
-
+            CsvReporter creporter = CsvReporter.forRegistry(db1Metrics).build("c:\\merchlog");
+            creporter.Start(1, TimeUnit.Seconds);
 
 
 
             //var docsTimedCounterPerSec = db1Metrics.TimedCounter("db1", "docs new indexed/sec", "new Indexed Documents");
             int i = 0;
-            //db1Metrics.Gauge<int>("testGauge", () => i);
+            db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
-            //var counter = db1Metrics.Counter("testCounter");
+            var counter = db1Metrics.Counter("testCounter");
             for (; i < 10000; i++)
             {
-                //meter.Mark();
-                //counter.Increment(i);
+                meter.Mark();
+                counter.Increment(i);
                 randomHist.Update(r.Next(101));
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             }
             //Console.WriteLine(docsTimedCounterPerSec.CurrentValue);
 

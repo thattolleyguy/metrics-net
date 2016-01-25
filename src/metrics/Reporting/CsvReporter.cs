@@ -25,7 +25,6 @@ namespace Metrics.Reporting
 
 
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(CsvReporter));
-        //private static readonly Charset UTF_8 = Charset.forName("UTF-8");
 
         private readonly string directory;
         private readonly Clock clock;
@@ -160,7 +159,7 @@ namespace Metrics.Reporting
             {
                 string filePath = System.IO.Path.Combine(directory, sanitize(name.Key));
                 bool fileAlreadyExists = File.Exists(filePath);
-                using (StreamWriter stream = new StreamWriter(File.Open(filePath, FileMode.OpenOrCreate)))
+                using (StreamWriter stream = File.AppendText(filePath))
                 {
 
                     if (!fileAlreadyExists)

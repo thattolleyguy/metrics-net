@@ -161,7 +161,6 @@ namespace Metrics.Core
         /// average in the top Unix command.
         /// </remarks>
         /// </summary>
-        /// <returns></returns>
         public double OneMinuteRate
         {
             get

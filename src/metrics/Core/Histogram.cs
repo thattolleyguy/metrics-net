@@ -46,13 +46,14 @@ namespace Metrics.Core
             reservoir.Update(value);
         }
 
-
-
         /// <summary>
         /// Returns the number of values recorded
         /// </summary>
         public long Count { get { return count.Get(); } }
 
+        /// <summary>
+        /// Returns a snapshot of the reservoir's value
+        /// </summary>
         public Snapshot Snapshot
         {
             get { return reservoir.Snapshot; }

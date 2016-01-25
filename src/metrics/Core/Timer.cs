@@ -166,17 +166,51 @@ namespace Metrics.Core
         {
             return new Context(this, clock);
         }
-
+        
+        /// <summary>
+        ///  Returns the number of events which have been marked
+        /// </summary>
+        /// <returns></returns>
         public long Count { get { return histogram.Count; } }
-
+        
+        /// <summary>
+        /// Returns the fifteen-minute exponentially-weighted moving average rate at
+        /// which events have occured since the meter was created
+        /// <remarks>
+        /// This rate has the same exponential decay factor as the fifteen-minute load
+        /// average in the top Unix command.
+        /// </remarks> 
+        /// </summary>
         public double FifteenMinuteRate { get { return meter.FifteenMinuteRate; } }
-
+        
+        /// <summary>
+        /// Returns the five-minute exponentially-weighted moving average rate at
+        /// which events have occured since the meter was created
+        /// <remarks>
+        /// This rate has the same exponential decay factor as the five-minute load
+        /// average in the top Unix command.
+        /// </remarks>
+        /// </summary>
         public double FiveMinuteRate { get { return meter.FiveMinuteRate; } }
-
+        
+        /// <summary>
+        /// Returns the mean rate at which events have occured since the meter was created
+        /// </summary>
         public double MeanRate { get { return meter.MeanRate; } }
-
+       
+        /// <summary>
+        /// Returns the one-minute exponentially-weighted moving average rate at
+        /// which events have occured since the meter was created
+        /// <remarks>
+        /// This rate has the same exponential decay factor as the one-minute load
+        /// average in the top Unix command.
+        /// </remarks>
+        /// </summary>
         public double OneMinuteRate { get { return meter.OneMinuteRate; } }
 
+        /// <summary>
+        /// Returns a snapshot of the reservoir's value
+        /// </summary>
         public Snapshot Snapshot { get { return histogram.Snapshot; } }
 
 
