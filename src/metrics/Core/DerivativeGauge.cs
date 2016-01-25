@@ -11,9 +11,13 @@ namespace Metrics.Core
     /// </summary>
     /// <typeparam name="F">The base gauge's value type</typeparam>
     /// <typeparam name="T">The derivative type</typeparam>
-    class DerivativeGauge<F, T> : Gauge<T>
+    public class DerivativeGauge<F, T> : Gauge<T>
     {
-        private readonly Gauge<F> baseGuage;
+        /// <summary>
+        /// Creates a new derivative with the given base gauge
+        /// </summary>
+        /// <param name="baseGauge">the gague from which to derive this gauge's value</param>
+        /// <param name="transform">transform function</param>
         public DerivativeGauge(Gauge<F> baseGauge, Func<F, T> transform) : base(() => transform(baseGauge.Value))
         {
 

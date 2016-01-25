@@ -27,7 +27,7 @@ namespace Metrics.Core
     /// </code>
     /// </example>
     /// </summary>
-    public class Gauge<T> : Gauge
+    public  class Gauge<T> : Gauge
     {
         private readonly Func<T> _evaluator;
 
@@ -36,7 +36,7 @@ namespace Metrics.Core
             _evaluator = evaluator;
         }
 
-        public T Value
+        public virtual T Value
         {
             get { return _evaluator.Invoke(); }
         }

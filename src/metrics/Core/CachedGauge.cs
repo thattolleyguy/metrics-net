@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Metrics.Core
 {
+    /// <summary>
+    /// A <see cref="Gauge">Gauge</see> implementation which caches its value for a period of time.
+    /// </summary>
+    /// <typeparam name="T">the type of the gauge's value</typeparam>
     public class CachedGauge<T> : Gauge<T>
     {
 
@@ -19,10 +23,10 @@ namespace Metrics.Core
         /// <summary>
         /// Creates a new cached gauge with the given timeout period.
         /// </summary>
-        /// <param name="timeout"> the timeout</param>
-        /// <param name="timeoutUnit">the unit of { @code timeout }</param>
-        /// <param name="evaluator"></param>
-        protected CachedGauge(long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : this(Clock.DEFAULT, timeout, timeoutUnit, evaluator)
+        /// <param name="timeout">the timeout</param>
+        /// <param name="timeoutUnit">the unit of timeout</param>
+        /// <param name="evaluator">Method of loading the value</param>
+        public CachedGauge(long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : this(Clock.DefaultClock, timeout, timeoutUnit, evaluator)
         {
 
         }
@@ -32,9 +36,9 @@ namespace Metrics.Core
         /// </summary>
         /// <param name="clock">the clock used to calculate the timeout</param>
         /// <param name="timeout">the timeout</param>
-        /// <param name="timeoutUnit">the unit of {@code timeout}</param>
-        /// <param name="evaluator"></param>
-        protected CachedGauge(Clock clock, long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : base(evaluator)
+        /// <param name="timeoutUnit">the unit of timeout</param>
+        /// <param name="evaluator">Method of loading the value</param>
+        public CachedGauge(Clock clock, long timeout, TimeUnit timeoutUnit, Func<T> evaluator) : base(evaluator)
         {
             this.clock = clock;
             this.reloadAt = new AtomicLong(0);
@@ -46,13 +50,16 @@ namespace Metrics.Core
         /// Loads the value and returns it.
         /// </summary>
         /// <returns>the new value</returns>
-        public T getValue()
+        public override T Value
         {
-            if (shouldLoad())
+            get
             {
-                this.value = this.Value;
+                if (shouldLoad())
+                {
+                    this.value = this.Value;
+                }
+                return value;
             }
-            return value;
         }
 
         private bool shouldLoad()

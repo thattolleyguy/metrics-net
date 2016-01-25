@@ -48,7 +48,7 @@ namespace Metrics.Reporting
                               IDictionary<MetricName, Meter> meters,
                               IDictionary<MetricName, Timer> timers)
         {
-            long timestamp = TimeUnit.Milliseconds.ToSeconds(clock.getTime());
+            long timestamp = TimeUnit.Milliseconds.ToSeconds(clock.CurrentTime);
 
             foreach (KeyValuePair<MetricName, Gauge> entry in gauges)
             {
@@ -200,8 +200,8 @@ namespace Metrics.Reporting
                 this.registry = registry;
                 this.rateUnit = TimeUnit.Seconds;
                 this.durationUnit = TimeUnit.Milliseconds;
-                this.clock = Clock.DEFAULT;
-                this.filter = MetricRegistry.ALL;
+                this.clock = Clock.DefaultClock;
+                this.filter = MetricFilters.ALL;
             }
 
             /**

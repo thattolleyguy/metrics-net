@@ -6,12 +6,6 @@
     public interface IMetered : ICounted
     {
         /// <summary>
-        ///  Returns the number of events which have been marked
-        /// </summary>
-        /// <returns></returns>
-        new long Count { get; }
-
-        /// <summary>
         /// Returns the fifteen-minute exponentially-weighted moving average rate at
         /// which events have occured since the meter was created
         /// <remarks>

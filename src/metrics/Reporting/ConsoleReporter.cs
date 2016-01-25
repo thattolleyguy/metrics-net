@@ -7,14 +7,117 @@ using System.IO;
 namespace Metrics.Reporting
 {
 
+    /// <summary>
+    /// A reporter which outputs measurements to a <see cref="TextWriter"/>, like <c>Console.out</c>
+    /// </summary>
     public class ConsoleReporter : ScheduledReporter
     {
 
-
+        /// <summary>
+        /// Creates a new <see cref="Builder"/> for <see cref="ConsoleReporter"/>
+        /// </summary>
+        /// <param name="registry">the registry to report</param>
+        /// <returns>a new <see cref="Builder"/> for <see cref="ConsoleReporter"/></returns>
         public static Builder ForRegistry(MetricRegistry registry)
         {
             return new Builder(registry);
         }
+
+        /// <summary>
+        /// A builder for <see cref="ConsoleReporter"/> instances. Defaults writing to <c>Console.out</c>, 
+        /// converting rates to events/second, converting durations to milliseconds, and not filtering metrics
+        /// </summary>
+        public class Builder
+        {
+            private readonly MetricRegistry registry;
+            private TextWriter output;
+            private Clock clock;
+            private TimeUnit rateUnit;
+            private TimeUnit durationUnit;
+            private MetricFilter filter;
+
+            internal Builder(MetricRegistry registry)
+            {
+                this.registry = registry;
+                this.output = Console.Out;
+                this.clock = Clock.DefaultClock;
+                this.rateUnit = TimeUnit.Seconds;
+                this.durationUnit = TimeUnit.Milliseconds;
+                this.filter = MetricFilters.ALL;
+            }
+
+            /// <summary>
+            /// Write to the given <see cref="TextWriter"/>
+            /// </summary>
+            /// <param name="output">a <see cref="TextWriter"/> instance</param>
+            /// <returns><c>this</c></returns>
+            public Builder outputTo(TextWriter output)
+            {
+                this.output = output;
+                return this;
+            }
+
+            /// <summary>
+            /// Use the given <see cref="Clock"/> instance for the time.
+            /// </summary>
+            /// <param name="clock">A <see cref="Clock"/> instance</param>
+            /// <returns><c>this</c></returns>
+            public Builder withClock(Clock clock)
+            {
+                this.clock = clock;
+                return this;
+            }
+
+
+            /// <summary>
+            /// Convert rates to the given time unit
+            /// </summary>
+            /// <param name="rateUnit">a unit of time</param>
+            /// <returns><c>this</c></returns>
+            public Builder convertRatesTo(TimeUnit rateUnit)
+            {
+                this.rateUnit = rateUnit;
+                return this;
+            }
+
+            /// <summary>
+            /// Conver durations to the given time unit
+            /// </summary>
+            /// <param name="durationUnit">a unit of time</param>
+            /// <returns><c>this</c></returns>
+            public Builder convertDurationsTo(TimeUnit durationUnit)
+            {
+                this.durationUnit = durationUnit;
+                return this;
+            }
+            /// <summary>
+            /// Only report metrics which match the given <see cref="MetricFilter"/>
+            /// </summary>
+            /// <param name="filter">a <see cref="MetricFilter"/></param>
+            /// <returns><c>this</c></returns>
+            public Builder withFilter(MetricFilter filter)
+            {
+                this.filter = filter;
+                return this;
+            }
+
+            /// <summary>
+            /// Builds a <see cref="ConsoleReporter"/> with the given properties
+            /// </summary>
+            /// <returns>a <see cref="ConsoleReporter"/></returns>
+            public ConsoleReporter build()
+            {
+                return new ConsoleReporter(registry,
+                                           output,
+                                           clock,
+                                           rateUnit,
+                                           durationUnit,
+                                           filter);
+            }
+        }
+
+
+
         private static readonly int CONSOLE_WIDTH = 80;
 
         private readonly TextWriter output;
@@ -168,100 +271,6 @@ namespace Metrics.Reporting
             output.WriteLine();
         }
 
-        public class Builder
-        {
-            private readonly MetricRegistry registry;
-            private TextWriter output;
-            private Clock clock;
-            private TimeUnit rateUnit;
-            private TimeUnit durationUnit;
-            private MetricFilter filter;
 
-            internal Builder(MetricRegistry registry)
-            {
-                this.registry = registry;
-                this.output = Console.Out;
-                this.clock = Clock.DEFAULT;
-                this.rateUnit = TimeUnit.Seconds;
-                this.durationUnit = TimeUnit.Milliseconds;
-                this.filter = MetricRegistry.ALL;
-            }
-
-            /**
-             * Write to the given {@link PrintStream}.
-             *
-             * @param output a {@link PrintStream} instance.
-             * @return {@code this}
-             */
-            public Builder outputTo(TextWriter output)
-            {
-                this.output = output;
-                return this;
-            }
-
-            /**
-             * Use the given {@link Clock} instance for the time.
-             *
-             * @param clock a {@link Clock} instance
-             * @return {@code this}
-             */
-            public Builder withClock(Clock clock)
-            {
-                this.clock = clock;
-                return this;
-            }
-
-
-            /**
-             * Convert rates to the given time unit.
-             *
-             * @param rateUnit a unit of time
-             * @return {@code this}
-             */
-            public Builder convertRatesTo(TimeUnit rateUnit)
-            {
-                this.rateUnit = rateUnit;
-                return this;
-            }
-
-            /**
-             * Convert durations to the given time unit.
-             *
-             * @param durationUnit a unit of time
-             * @return {@code this}
-             */
-            public Builder convertDurationsTo(TimeUnit durationUnit)
-            {
-                this.durationUnit = durationUnit;
-                return this;
-            }
-
-            /**
-             * Only report metrics which match the given filter.
-             *
-             * @param filter a {@link MetricFilter}
-             * @return {@code this}
-             */
-            public Builder withFilter(MetricFilter filter)
-            {
-                this.filter = filter;
-                return this;
-            }
-
-            /**
-             * Builds a {@link ConsoleReporter} with the given properties.
-             *
-             * @return a {@link ConsoleReporter}
-             */
-            public ConsoleReporter build()
-            {
-                return new ConsoleReporter(registry,
-                                           output,
-                                           clock,
-                                           rateUnit,
-                                           durationUnit,
-                                           filter);
-            }
-        }
     }
 }

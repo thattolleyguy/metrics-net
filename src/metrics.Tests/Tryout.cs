@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using Metrics.Core;
 using Metrics.Reporting;
+using Metrics.CLR;
 
 namespace Metrics.Tests
 {
@@ -12,25 +13,28 @@ namespace Metrics.Tests
         {
             var db1Metrics = new MetricRegistry();
             var reporter = ConsoleReporter.ForRegistry(db1Metrics).build();
-            var meter = db1Metrics.Meter("testMeter");
+            //var meter = db1Metrics.Meter("testMeter");
             var randomHist = db1Metrics.Histogram("testHist");
-            
-            reporter.start(1, TimeUnit.Seconds);
+            //var machineMetrics = MachineMetrics.Create(MachineMetricsCategory.All);
+            //db1Metrics.Register("MachineMetrics", machineMetrics);
+
+            reporter.Start(1, TimeUnit.Seconds);
 
 
 
 
             //var docsTimedCounterPerSec = db1Metrics.TimedCounter("db1", "docs new indexed/sec", "new Indexed Documents");
             int i = 0;
-            db1Metrics.Gauge<int>("testGauge",()=>i);
+            //db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
-            var counter = db1Metrics.Counter("testCounter");
-            for (; i < 1000; i++)
+            //var counter = db1Metrics.Counter("testCounter");
+            for (; i < 10000; i++)
             {
-                meter.Mark();
-                counter.Increment(i);
-                randomHist.Update(r.Next(100));
-                Thread.Sleep(100);
+                //meter.Mark();
+                //counter.Increment(i);
+                //Console.Out.WriteLine("CurrentTicks:{0}",DateTime.Now.Ticks);
+                randomHist.Update(r.Next(101));
+                Thread.Sleep(10);
             }
             //Console.WriteLine(docsTimedCounterPerSec.CurrentValue);
 

@@ -10,7 +10,6 @@ using System.Collections.Immutable;
 namespace Metrics
 {
 
-    public delegate bool MetricFilter(MetricName name, IMetric metric);
 
     /// <summary>
     /// A set of factory methods for creating centrally registered metric instances
@@ -20,27 +19,45 @@ namespace Metrics
     public class MetricRegistry
     {
 
-        public static MetricFilter ALL = AllMetrics;
-        private static bool AllMetrics(MetricName name, IMetric metric)
-        {
-            return true;
-        }
-
-        private readonly ConcurrentDictionary<MetricName, IMetric> metrics;
+        private readonly ConcurrentDictionary<MetricName, IMetric> _metrics;
         private readonly MetricRegistryEventHandler handler;
 
 
-        public MetricRegistry()
+        public MetricRegistry() : this(new ConcurrentDictionary<MetricName, IMetric>())
         {
-            this.metrics = new ConcurrentDictionary<MetricName, IMetric>();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="MetricRegistry"/> with a custom <see cref="ConcurrentDictionary{TKey, TValue}"/>
+        /// implementation for use inside the registry. Call as the super-constructor to create a <see cref="MetricRegistry"/>
+        /// with space- or time-bounded metric lifecycles, for example.
+        /// </summary>
+        /// <param name="metricsMap"></param>
+        protected MetricRegistry(ConcurrentDictionary<MetricName, IMetric> metricsMap)
+        {
+            this._metrics = metricsMap;
             this.handler = new MetricRegistryEventHandler();
         }
 
+        /// <summary>
+        /// Given an <see cref="IMetric"/>, registers it under the given name
+        /// </summary>
+        /// <typeparam name="T">the type of the metric</typeparam>
+        /// <param name="name">the name of the metric</param>
+        /// <param name="metric">the metric</param>
+        /// <returns><see cref="IMetric"/></returns>
         public T Register<T>(string name, T metric) where T : IMetric
         {
             return Register(MetricName.build(name), metric);
         }
 
+        /// <summary>
+        /// Given an <see cref="IMetric"/>, registers it under the given name
+        /// </summary>
+        /// <typeparam name="T">the type of the metric</typeparam>
+        /// <param name="name">the name of the metric</param>
+        /// <param name="metric">the metric</param>
+        /// <returns><see cref="IMetric"/></returns>
         public T Register<T>(MetricName name, T metric) where T : IMetric
         {
             if (metric is MetricSet)
@@ -49,15 +66,14 @@ namespace Metrics
             }
             else
             {
-                bool exists = metrics.TryAdd(name, metric);
-                if (exists)
+                bool added = _metrics.TryAdd(name, metric);
+                if (added)
                 {
-                    throw new ArgumentException("A metric named " + name + " already exists");
-
+                    OnMetricAdded(name, metric);
                 }
                 else
                 {
-                    OnMetricAdded(name, metric);
+                    throw new ArgumentException("A metric named " + name + " already exists");
 
                 }
             }
@@ -66,20 +82,22 @@ namespace Metrics
         }
 
         /// <summary>
-        /// Creates a new counter metric and registers it under the given type and name
+        /// Return the <see cref="Core.Counter"/> registered under this name; or create and register
+        /// a new <see cref="Core.Counter"/> if none is registered.
         /// </summary>
         /// <param name="name">The metric name</param>
-        /// <returns></returns>
+        /// <returns>a new or pre-existing <see cref="Core.Counter"/></returns>
         public Counter Counter(string name)
         {
             return Counter(MetricName.build(name));
         }
 
         /// <summary>
-        /// Creates a new counter metric and registers it under the given type and name
+        /// Return the <see cref="Core.Counter"/> registered under this name; or create and register
+        /// a new <see cref="Core.Counter"/> if none is registered.
         /// </summary>
         /// <param name="name">The metric name</param>
-        /// <returns></returns>
+        /// <returns>a new or pre-existing <see cref="Core.Counter"/></returns>
         public Counter Counter(MetricName name)
         {
             return GetOrAdd(name, new Counter());
@@ -87,15 +105,21 @@ namespace Metrics
 
 
         /// <summary>
-        /// Creates a new non-biased histogram metric and registers it under the given type and name
+        /// Return the <see cref="Core.Histogram"/> registered under this name; or create and register
+        /// a new <see cref="Core.Histogram"/> if none is registered.
         /// </summary>
         /// <param name="name">The metric name</param>
-        /// <returns></returns>
+        /// <returns>a new or pre-existing <see cref="Core.Histogram"/></returns>
         public Histogram Histogram(string name)
         {
             return Histogram(MetricName.build(name));
         }
-
+        /// <summary>
+        /// Return the <see cref="Core.Histogram"/> registered under this name; or create and register
+        /// a new <see cref="Core.Histogram"/> if none is registered.
+        /// </summary>
+        /// <param name="name">The metric name</param>
+        /// <returns>a new or pre-existing <see cref="Core.Histogram"/></returns>
         public Histogram Histogram(MetricName name)
         {
             return GetOrAdd(name, new Histogram(new ExponentiallyDecayingReservoir()));
@@ -103,51 +127,80 @@ namespace Metrics
 
 
         /// <summary>
-        /// Creates a new meter metric and registers it under the given type and name
+        /// Return the <see cref="Core.Meter"/> registered under this name; or create and register
+        /// a new <see cref="Core.Meter"/> if none is registered.
         /// </summary>
         /// <param name="name">The metric name</param>
-        /// <returns></returns>
+        /// <returns>a new or pre-existing <see cref="Core.Meter"/></returns>
         public Meter Meter(string name)
         {
             return Meter(MetricName.build(name));
         }
-
+        /// <summary>
+        /// Return the <see cref="Core.Meter"/> registered under this name; or create and register
+        /// a new <see cref="Core.Meter"/> if none is registered.
+        /// </summary>
+        /// <param name="name">The metric name</param>
+        /// <returns>a new or pre-existing <see cref="Core.Meter"/></returns>
         public Meter Meter(MetricName name)
         {
             return GetOrAdd(name, new Meter());
         }
-        
+
         /// <summary>
-        /// Creates a new timer metric and registers it under the given type and name
+        /// Return the <see cref="Core.Timer"/> registered under this name; or create and register
+        /// a new <see cref="Core.Timer"/> if none is registered.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The metric name</param>
+        /// <returns>a new or pre-existing <see cref="Core.Timer"/></returns>
         public Timer Timer(String name)
         {
             return Timer(MetricName.build(name));
         }
-
+        /// <summary>
+        /// Return the <see cref="Core.Timer"/> registered under this name; or create and register
+        /// a new <see cref="Core.Timer"/> if none is registered.
+        /// </summary>
+        /// <param name="name">The metric name</param>
+        /// <returns>a new or pre-existing <see cref="Core.Timer"/></returns>
         public Timer Timer(MetricName name)
         {
             return GetOrAdd(name, new Core.Timer());
         }
 
         /// <summary>
-        /// Creates a new gauge metric and registers it under the given type and name
+        /// Return the <see cref="Core.Gauge"/> registered under this name; or create and register
+        /// a new <see cref="Core.Gauge"/> if none is registered.
         /// </summary>
-        /// <typeparam name="T">The type the gauge measures</typeparam>
         /// <param name="name">The metric name</param>
-        /// <param name="evaluator">The gauge evaluation function</param>
-        /// <returns></returns>
+        /// <param name="evaluator">The evaluator for the gauge</param>
+        /// <returns>a new or pre-existing <see cref="Core.Gauge"/></returns>
         public Gauge<T> Gauge<T>(string name, Func<T> evaluator)
         {
-            return GetOrAdd(new MetricName(name), new Gauge<T>(evaluator));
+            return Gauge(new MetricName(name), evaluator);
         }
 
+        /// <summary>
+        /// Return the <see cref="Core.Gauge"/> registered under this name; or create and register
+        /// a new <see cref="Core.Gauge"/> if none is registered.
+        /// </summary>
+        /// <param name="name">The metric name</param>
+        /// <param name="evaluator">The evaluator for the gauge</param>
+        /// <returns>a new or pre-existing <see cref="Core.Gauge"/></returns>
+        public Gauge<T> Gauge<T>(MetricName name, Func<T> evaluator)
+        {
+            return GetOrAdd(name, new Gauge<T>(evaluator));
+        }
+
+        /// <summary>
+        /// Removes the metric with the given name.
+        /// </summary>
+        /// <param name="name">the name of the metric</param>
+        /// <returns>whether or not the metric was removed</returns>
         public bool Remove(MetricName name)
         {
             IMetric metric = null;
-            metrics.TryRemove(name, out metric);
+            _metrics.TryRemove(name, out metric);
             if (metric != null)
             {
                 OnMetricRemoved(name, metric);
@@ -156,9 +209,13 @@ namespace Metrics
             return false;
         }
 
+        /// <summary>
+        /// Removes all metrics which match the given filter.
+        /// </summary>
+        /// <param name="filter">a filter</param>
         public void RemoveMatching(MetricFilter filter)
         {
-            foreach (KeyValuePair<MetricName, IMetric> pair in metrics)
+            foreach (KeyValuePair<MetricName, IMetric> pair in _metrics)
             {
                 if (filter(pair.Key, pair.Value))
                 {
@@ -167,105 +224,107 @@ namespace Metrics
             }
         }
 
+
+        /// <summary>
+        /// The set of the names of all the metrics in the registry.
+        /// </summary>
         public ImmutableSortedSet<MetricName> Names
         {
             get
             {
-                return metrics.Keys.ToImmutableSortedSet();
+                return _metrics.Keys.ToImmutableSortedSet();
             }
         }
 
+        /// <summary>
+        /// Returns a map of all the gauges in the registry and their names.
+        /// </summary>
+        /// <returns>all the gauges in the registry</returns>
         public IDictionary<MetricName, Gauge> getGauges()
         {
-            return getGauges(ALL);
+            return getGauges(MetricFilters.ALL);
         }
 
+        /// <summary>
+        /// Returns a map of all the gauges in the registry and their names which match the given filter.
+        /// </summary>
+        /// <param name="filter">the metric filter to match</param>
+        /// <returns>the matching gauges in the registry</returns>
         public IDictionary<MetricName, Gauge> getGauges(MetricFilter filter)
         {
             return getMetrics<Gauge>(filter);
         }
 
-        /**
-    * Returns a map of all the counters in the registry and their names.
-    *
-    * @return all the counters in the registry
-    */
+        /// <summary>
+        /// Returns a map of all the counters in the registry and their names.
+        /// </summary>
+        /// <returns>all the counters in the registry</returns>
         public IDictionary<MetricName, Counter> getCounters()
         {
-            return getCounters(ALL);
+            return getCounters(MetricFilters.ALL);
         }
-
-        /**
-         * Returns a map of all the counters in the registry and their names which match the given
-         * filter.
-         *
-         * @param filter    the metric filter to match
-         * @return all the counters in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the counters in the registry and their names which match the given filter.
+        /// </summary>
+        /// <param name="filter">the metric filter to match</param>
+        /// <returns>the matching counters in the registry</returns>
         public IDictionary<MetricName, Counter> getCounters(MetricFilter filter)
         {
             return getMetrics<Counter>(filter);
         }
 
-        /**
-         * Returns a map of all the histograms in the registry and their names.
-         *
-         * @return all the histograms in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the histograms in the registry and their names.
+        /// </summary>
+        /// <returns>all the histograms in the registry</returns>
         public IDictionary<MetricName, Histogram> getHistograms()
         {
-            return getHistograms(ALL);
+            return getHistograms(MetricFilters.ALL);
         }
 
-        /**
-         * Returns a map of all the histograms in the registry and their names which match the given
-         * filter.
-         *
-         * @param filter    the metric filter to match
-         * @return all the histograms in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the histograms in the registry and their names which match the given filter.
+        /// </summary>
+        /// <param name="filter">the metric filter to match</param>
+        /// <returns>the matching histograms in the registry</returns>
         public IDictionary<MetricName, Histogram> getHistograms(MetricFilter filter)
         {
             return getMetrics<Histogram>(filter);
         }
 
-        /**
-         * Returns a map of all the meters in the registry and their names.
-         *
-         * @return all the meters in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the meters in the registry and their names.
+        /// </summary>
+        /// <returns>all the meters in the registry</returns>
         public IDictionary<MetricName, Meter> getMeters()
         {
-            return getMeters(ALL);
+            return getMeters(MetricFilters.ALL);
         }
 
-        /**
-         * Returns a map of all the meters in the registry and their names which match the given filter.
-         *
-         * @param filter    the metric filter to match
-         * @return all the meters in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the meters in the registry and their names which match the given filter.
+        /// </summary>
+        /// <param name="filter">the metric filter to match</param>
+        /// <returns>the matching meters in the registry</returns>
         public IDictionary<MetricName, Meter> getMeters(MetricFilter filter)
         {
             return getMetrics<Meter>(filter);
         }
 
-        /**
-         * Returns a map of all the timers in the registry and their names.
-         *
-         * @return all the timers in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the timers in the registry and their names.
+        /// </summary>
+        /// <returns>all the timers in the registry</returns>
         public IDictionary<MetricName, Timer> getTimers()
         {
-            return getTimers(ALL);
+            return getTimers(MetricFilters.ALL);
         }
 
-        /**
-         * Returns a map of all the timers in the registry and their names which match the given filter.
-         *
-         * @param filter    the metric filter to match
-         * @return all the timers in the registry
-         */
+        /// <summary>
+        /// Returns a map of all the timers in the registry and their names which match the given filter.
+        /// </summary>
+        /// <param name="filter">the metric filter to match</param>
+        /// <returns>the matching timers in the registry</returns>
         public IDictionary<MetricName, Timer> getTimers(MetricFilter filter)
         {
             return getMetrics<Timer>(filter);
@@ -273,12 +332,12 @@ namespace Metrics
 
         private T GetOrAdd<T>(MetricName name, T metric) where T : IMetric
         {
-            if (metrics.ContainsKey(name))
+            if (_metrics.ContainsKey(name))
             {
-                return (T)metrics[name];
+                return (T)_metrics[name];
             }
 
-            var added = metrics.AddOrUpdate(name, metric, (n, m) => m);
+            var added = _metrics.AddOrUpdate(name, metric, (n, m) => m);
 
             return added == null ? metric : (T)added;
         }
@@ -288,7 +347,7 @@ namespace Metrics
         {
             MetricFilter finalFilter = filter + ((name, metric) => metric is T);
             IDictionary<MetricName, T> retVal = new Dictionary<MetricName, T>();
-            foreach (KeyValuePair<MetricName, IMetric> kv in metrics)
+            foreach (KeyValuePair<MetricName, IMetric> kv in _metrics)
             {
                 if (finalFilter(kv.Key, kv.Value))
                 {
@@ -299,13 +358,16 @@ namespace Metrics
             return retVal.ToImmutableDictionary();
         }
 
+        /// <summary>
+        /// Get all Metrics in the registry
+        /// </summary>
         public IDictionary<MetricName, IMetric> Metrics
         {
-            get { return metrics.ToImmutableDictionary(); }
+            get { return _metrics.ToImmutableDictionary(); }
         }
 
 
-        public void OnMetricAdded(MetricName name, IMetric metric)
+        private void OnMetricAdded(MetricName name, IMetric metric)
         {
             Type metricType = metric.GetType();
             if (metricType.IsSubclassOf(typeof(Gauge)))
@@ -363,12 +425,12 @@ namespace Metrics
             }
         }
 
-        private void RegisterAll(MetricName prefix, MetricSet metrics)
+        private void RegisterAll(MetricName prefix, MetricSet metricSet)
         {
             if (prefix == null)
                 prefix = MetricName.EMPTY;
 
-            foreach (KeyValuePair<MetricName, IMetric> entry in metrics.Metrics)
+            foreach (KeyValuePair<MetricName, IMetric> entry in metricSet.Metrics)
             {
                 if (entry.Value is MetricSet)
                 {
@@ -383,117 +445,60 @@ namespace Metrics
 
 
 
-        /**
-         * Adds a {@link MetricRegistryListener} to a collection of listeners that will be notified on
-         * metric creation.  Listeners will be notified in the order in which they are added.
-         * <p/>
-         * <b>N.B.:</b> The listener will be notified of all existing metrics when it first registers.
-         *
-         * @param listener the listener that will be notified
-         */
+        /// <summary>
+        /// Adds a <see cref="MetricRegistryListener"/> to a collection of listeners that will be notified on
+        /// metric creation.Listeners will be notified in the order in which they are added.
+        /// <para />
+        /// The listener will be notified of all existing metrics when it first registers.
+        /// </summary>
+        /// <param name="listener"></param>
         public void AddListener(MetricRegistryListener listener)
         {
             handler.RegisterListener(listener);
             // TODO: Figure out how to notify listener of existing metrics efficiently
-            /*for (Map.Entry<MetricName, Metric> entry : metrics.entrySet())
+            foreach (KeyValuePair<MetricName, IMetric> entry in this._metrics)
             {
-                notifyListenerOfAddedMetric(listener, entry.getValue(), entry.getKey());
-            }*/
+                MetricName name = entry.Key;
+                IMetric metric = entry.Value;
+                Type metricType = metric.GetType();
+                if (metricType.IsSubclassOf(typeof(Gauge)))
+                {
+                    handler.onGaugeAdded(name, (Gauge)metric);
+                }
+                else if (metric is Counter)
+                {
+                    handler.onCounterAdded(name, (Counter)metric);
+                }
+                else if (metric is Histogram)
+                {
+                    handler.onHistogramAdded(name, (Histogram)metric);
+                }
+                else if (metric is Meter)
+                {
+                    handler.onMeterAdded(name, (Meter)metric);
+                }
+                else if (metric is Timer)
+                {
+                    handler.onTimerAdded(name, (Timer)metric);
+                }
+                else
+                {
+                    continue;
+                }
+            }
         }
 
 
-        /**
-         * Removes a {@link MetricRegistryListener} from this registry's collection of listeners.
-         *
-         * @param listener the listener that will be removed
-         */
+        /// <summary>
+        /// Removes a <see cref="MetricRegistryListener"/> from this registry's collection of listeners.
+        /// </summary>
+        /// <param name="listener">the listener that will be removed</param>
         public void RemoveListener(MetricRegistryListener listener)
         {
             handler.RemoveListener(listener);
         }
 
     }
-
-    public interface MetricRegistryListener
-    {
-        /**
-     * Called when a {@link Gauge} is added to the registry.
-     *
-     * @param name  the gauge's name
-     * @param gauge the gauge
-     */
-        void onGaugeAdded(MetricName name, Gauge gauge);
-
-        /**
-         * Called when a {@link Gauge} is removed from the registry.
-         *
-         * @param name the gauge's name
-         */
-        void onGaugeRemoved(MetricName name);
-
-        /**
-         * Called when a {@link Counter} is added to the registry.
-         *
-         * @param name    the counter's name
-         * @param counter the counter
-         */
-        void onCounterAdded(MetricName name, Counter counter);
-
-        /**
-         * Called when a {@link Counter} is removed from the registry.
-         *
-         * @param name the counter's name
-         */
-        void onCounterRemoved(MetricName name);
-
-        /**
-         * Called when a {@link Histogram} is added to the registry.
-         *
-         * @param name      the histogram's name
-         * @param histogram the histogram
-         */
-        void onHistogramAdded(MetricName name, Histogram histogram);
-
-        /**
-         * Called when a {@link Histogram} is removed from the registry.
-         *
-         * @param name the histogram's name
-         */
-        void onHistogramRemoved(MetricName name);
-
-        /**
-         * Called when a {@link Meter} is added to the registry.
-         *
-         * @param name  the meter's name
-         * @param meter the meter
-         */
-        void onMeterAdded(MetricName name, Meter meter);
-
-        /**
-         * Called when a {@link Meter} is removed from the registry.
-         *
-         * @param name the meter's name
-         */
-        void onMeterRemoved(MetricName name);
-
-        /**
-         * Called when a {@link Timer} is added to the registry.
-         *
-         * @param name  the timer's name
-         * @param timer the timer
-         */
-        void onTimerAdded(MetricName name, Timer timer);
-
-        /**
-         * Called when a {@link Timer} is removed from the registry.
-         *
-         * @param name the timer's name
-         */
-        void onTimerRemoved(MetricName name);
-
-
-    }
-
     public class MetricRegistryEventHandler
     {
         internal Action<MetricName, Gauge> onGaugeAdded = (name, metric) => { };

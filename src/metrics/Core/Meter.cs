@@ -29,25 +29,25 @@ namespace Metrics.Core
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
         private Clock clock;
 
+        /// <summary>
+        /// Creates a new <see cref="Meter"/>
+        /// </summary>
         public Meter() :
-            this(Clock.DEFAULT)
+            this(Clock.DefaultClock)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Meter"/>
+        /// </summary>
+        /// <param name="clock">the clock to use for the meter ticks</param>
         public Meter(Clock clock)
         {
             this.clock = clock;
             this._startTime = this.clock.getTick();
             this._lastTick = new AtomicLong(_startTime);
         }
-
-        /// <summary>
-        /// Returns the type of events the meter is measuring
-        /// </summary>
-        /// <returns></returns>
-        public string EventType { get; private set; }
-
 
         /// <summary>
         /// Mark the occurrence of an event
@@ -60,6 +60,7 @@ namespace Metrics.Core
         /// <summary>
         /// Mark the occurrence of a given number of events
         /// </summary>
+        /// <param name="n">the number of events</param>
         public void Mark(long n)
         {
             tickIfNecessary();

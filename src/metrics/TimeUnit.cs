@@ -8,8 +8,8 @@ namespace Metrics
     /// </summary>
     public enum TimeUnit
     {
-        Ticks = 0,
-        Nanoseconds = 1,
+        Nanoseconds = 0,
+        Ticks = 1,
         Microseconds = 2,
         Milliseconds = 3,
         Seconds = 4,
@@ -30,8 +30,8 @@ namespace Metrics
 			var unitsCount = Enum.GetValues(typeof(TimeUnit)).Length;
 			var timingFactors = new[] 
 			{
-                100L,   // Ticks to nanos
-				1000L,  // Nanos to micros
+                100L,   // Nanos to ticks
+				10L,  // Ticks to micros
 				1000L,  // Micros to millis
 				1000L,  // Millis to seconds
 				60L,    // Seconds to minutes
