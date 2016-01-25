@@ -2,7 +2,7 @@
 using System.Text;
 using Metrics.Core;
 
-namespace Metrics
+namespace Metrics.Health
 {
     /// <summary>
     /// A template class for an encapsulated service health check. This class is enforced so that all exceptions are caught

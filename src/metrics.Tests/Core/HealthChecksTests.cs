@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Metrics.Health;
+using NUnit.Framework;
 
 namespace Metrics.Tests.Core
 {
