@@ -32,7 +32,6 @@ namespace Metrics.Tests
             {
                 //meter.Mark();
                 //counter.Increment(i);
-                //Console.Out.WriteLine("CurrentTicks:{0}",DateTime.Now.Ticks);
                 randomHist.Update(r.Next(101));
                 Thread.Sleep(10);
             }
