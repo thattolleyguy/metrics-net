@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -14,6 +15,8 @@ namespace Metrics.Core
         {
             this.type = type;
         }
+
+        [JsonIgnore]
         public abstract string ValueAsString { get; }
     }
 
@@ -27,7 +30,7 @@ namespace Metrics.Core
     /// </code>
     /// </example>
     /// </summary>
-    public  class Gauge<T> : Gauge
+    public class Gauge<T> : Gauge
     {
         private readonly Func<T> _evaluator;
 
@@ -41,6 +44,7 @@ namespace Metrics.Core
             get { return _evaluator.Invoke(); }
         }
 
+        [JsonIgnore]
         public override string ValueAsString
         {
             get { return Value.ToString(); }
