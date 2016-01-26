@@ -19,6 +19,7 @@ namespace Metrics.Core
         private readonly AtomicLong reloadAt;
         private readonly long timeoutNS;
         private T value;
+        
 
         /// <summary>
         /// Creates a new cached gauge with the given timeout period.
@@ -56,7 +57,7 @@ namespace Metrics.Core
             {
                 if (shouldLoad())
                 {
-                    this.value = this.Value;
+                    this.value = base.Value;
                 }
                 return value;
             }
@@ -67,12 +68,12 @@ namespace Metrics.Core
             for (;;)
             {
                 long time = clock.getTick();
-                long current = reloadAt.Get();
-                if (current > time)
+                long currentReload = reloadAt.Get();
+                if (currentReload > time)
                 {
                     return false;
                 }
-                if (reloadAt.CompareAndSet(current, time + timeoutNS))
+                if (reloadAt.CompareAndSet(currentReload, time + timeoutNS))
                 {
                     return true;
                 }
