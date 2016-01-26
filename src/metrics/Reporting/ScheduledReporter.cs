@@ -81,7 +81,7 @@ namespace Metrics.Reporting
         /// <summary>
         /// Stops the reporter and shuts down its thread of execution
         /// </summary>
-        public void stop()
+        public virtual void Stop()
         {
             threadTimer.Stop();
         }
@@ -147,7 +147,7 @@ namespace Metrics.Reporting
             {
                 if (disposing)
                 {
-                    stop();
+                    Stop();
                 }
 
 
