@@ -25,7 +25,6 @@ namespace Metrics.Reporting
 
 
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(CsvReporter));
-        //private static readonly Charset UTF_8 = Charset.forName("UTF-8");
 
         private readonly string directory;
         private readonly Clock clock;
@@ -48,7 +47,7 @@ namespace Metrics.Reporting
                               IDictionary<MetricName, Meter> meters,
                               IDictionary<MetricName, Timer> timers)
         {
-            long timestamp = TimeUnit.Milliseconds.ToSeconds(clock.getTime());
+            long timestamp = TimeUnit.Milliseconds.ToSeconds(clock.CurrentTime);
 
             foreach (KeyValuePair<MetricName, Gauge> entry in gauges)
             {
@@ -160,7 +159,7 @@ namespace Metrics.Reporting
             {
                 string filePath = System.IO.Path.Combine(directory, sanitize(name.Key));
                 bool fileAlreadyExists = File.Exists(filePath);
-                using (StreamWriter stream = new StreamWriter(File.Open(filePath, FileMode.OpenOrCreate)))
+                using (StreamWriter stream = File.AppendText(filePath))
                 {
 
                     if (!fileAlreadyExists)
@@ -200,8 +199,8 @@ namespace Metrics.Reporting
                 this.registry = registry;
                 this.rateUnit = TimeUnit.Seconds;
                 this.durationUnit = TimeUnit.Milliseconds;
-                this.clock = Clock.DEFAULT;
-                this.filter = MetricRegistry.ALL;
+                this.clock = Clock.DefaultClock;
+                this.filter = MetricFilters.ALL;
             }
 
             /**

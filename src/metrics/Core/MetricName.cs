@@ -6,7 +6,9 @@ using System.Text;
 namespace Metrics.Core
 {
     /// <summary>
-    /// A hash key for storing metrics associated by the parent class and name pair
+    /// A metric name with the ability to include semantic tags.
+    /// This replaces the previous style where metric names where strictly
+    /// dot-separated strings.
     /// </summary>
     public class MetricName : IComparable<MetricName>
     {
@@ -52,6 +54,13 @@ namespace Metrics.Core
         {
             get { return _tags; }
         }
+        /// <summary>
+        /// Build the MetricName that is this with another path appended to it.
+        /// 
+        /// The new MetricName inherits the tags of this one.
+        /// </summary>
+        /// <param name="p">The extra path element to add to the new metric.</param>
+        /// <returns>A new metric name relative to the original by the path specified in p.</returns>
         public MetricName resolve(string p)
         {
             string next;
@@ -73,6 +82,11 @@ namespace Metrics.Core
             return new MetricName(next, _tags);
         }
 
+        /// <summary>
+        /// Add tags to a metric name and return the newly created MetricName.
+        /// </summary>
+        /// <param name="add">Tags to add</param>
+        /// <returns>A newly created metric name with the specified tags associated with it.</returns>
         public MetricName tagged(IDictionary<string, string> add)
         {
             Dictionary<string, string> tags = new Dictionary<string, string>(add);
@@ -81,6 +95,11 @@ namespace Metrics.Core
             return new MetricName(_key, tags);
         }
 
+        /// <summary>
+        /// Same as <see cref="MetricName.tagged(IDictionary{string, string})"/>, but takes a variadic list of arguments.
+        /// </summary>
+        /// <param name="pairs">An even list of strings acting as key-value pairs</param>
+        /// <returns>A newly created metric name with the specified tags associated with it</returns>
         public MetricName tagged(params string[] pairs)
         {
             if (pairs == null)
@@ -103,13 +122,12 @@ namespace Metrics.Core
             return tagged(add);
         }
 
-        /**
-         * Join the specified set of metric names.
-         *
-         * @param parts Multiple metric names to join using the separator.
-         * @return A newly created metric name which has the name of the specified
-         *         parts and includes all tags of all child metric names.
-         **/
+        /// <summary>
+        /// Join the specified set of metric names.
+        /// </summary>
+        /// <param name="parts">Multiple metric names to join using the separator.</param>
+        /// <returns> A newly created metric name which has the name of the specified 
+        /// parts and includes all tags of all child metric names.</returns>
         public static MetricName join(params MetricName[] parts)
         {
             StringBuilder nameBuilder = new StringBuilder();
@@ -142,6 +160,11 @@ namespace Metrics.Core
             return new MetricName(nameBuilder.ToString(), tags);
         }
 
+        /// <summary>
+        /// Build a new metric name using the specific path components.
+        /// </summary>
+        /// <param name="parts">Path of the new metric name.</param>
+        /// <returns>A newly created metric name with the specified path.</returns>
         public static MetricName build(params string[] parts)
         {
             if (parts == null || parts.Length == 0)
@@ -297,17 +320,6 @@ namespace Metrics.Core
             SortedSet<string> set = new SortedSet<string>(left.Keys);
             set.UnionWith(right.Keys);
             return set;
-        }
-
-
-        public static bool operator ==(MetricName x, MetricName y)
-        {
-            return x.CompareTo(y) == 0;
-        }
-
-        public static bool operator !=(MetricName x, MetricName y)
-        {
-            return !(x == y);
         }
 
         public static MetricName name(Type @class, params string[] names)

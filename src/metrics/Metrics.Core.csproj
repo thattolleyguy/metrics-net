@@ -25,6 +25,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +49,10 @@
       <HintPath>..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
@@ -63,16 +69,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLR\PerformanceCounterGauge.cs" />
     <Compile Include="Core\CachedGauge.cs" />
     <Compile Include="Core\Clock.cs" />
+    <Compile Include="Core\DerivativeGauge.cs" />
+    <Compile Include="Core\ExponentiallyDecayingReservoir.cs" />
     <Compile Include="Core\Histogram.cs" />
     <Compile Include="Core\ICounted.cs" />
+    <Compile Include="Core\ISampling.cs" />
+    <Compile Include="Core\MetricFilter.cs" />
+    <Compile Include="Core\MetricRegistry.cs" />
+    <Compile Include="Core\MetricRegistryListener.cs" />
+    <Compile Include="Core\MetricSet.cs" />
     <Compile Include="Core\Reservoir.cs" />
     <Compile Include="Core\Snapshot.cs" />
     <Compile Include="Core\WeightedSnapshot.cs" />
-    <Compile Include="MachineMetricsCategory.cs" />
+    <Compile Include="CLR\MachineMetricsCategory.cs" />
     <Compile Include="Core\Timer.cs" />
-    <Compile Include="MachineMetrics.cs" />
+    <Compile Include="CLR\MachineMetrics.cs" />
     <Compile Include="Reporting\ConsoleReporter.cs" />
     <Compile Include="Reporting\CsvReporter.cs" />
     <Compile Include="Reporting\IReporter.cs" />
@@ -81,19 +95,18 @@
     <Compile Include="Support\Volatile.cs" />
     <Compile Include="Support\VolatileDouble.cs" />
     <Compile Include="Support\AtomicLong.cs" />
-    <Compile Include="Util\CLRProfiler.cs" />
+    <Compile Include="CLR\CLRProfiler.cs" />
     <Compile Include="Core\Counter.cs" />
     <Compile Include="Core\Gauge.cs" />
-    <Compile Include="HealthCheck.cs" />
-    <Compile Include="HealthChecks.cs" />
+    <Compile Include="HealthChecks\HealthCheck.cs" />
+    <Compile Include="HealthChecks\HealthChecks.cs" />
     <Compile Include="Core\IMetered.cs" />
     <Compile Include="Core\IMetric.cs" />
     <Compile Include="Core\Meter.cs" />
     <Compile Include="Core\MetricName.cs" />
-    <Compile Include="Core\Metrics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stats\EWMA.cs" />
-    <Compile Include="TimeUnit.cs" />
+    <Compile Include="Support\TimeUnit.cs" />
     <Compile Include="Support\VolatileLong.cs" />
     <Compile Include="Util\NamedThreadFactory.cs" />
     <Compile Include="Support\ThreadGroup.cs" />

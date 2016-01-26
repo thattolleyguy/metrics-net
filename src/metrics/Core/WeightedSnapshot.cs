@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Metrics.Core
 {
+    /// <summary>
+    /// A single sample item with value and its weights for <see cref="WeightedSnapshot"/>
+    /// </summary>
     public class WeightedSample
     {
         public readonly long value;
@@ -18,6 +21,8 @@ namespace Metrics.Core
             this.weight = weight;
         }
     }
+
+
 
     class WeightedSampleComparer : IComparer<WeightedSample>
     {
@@ -35,22 +40,14 @@ namespace Metrics.Core
     public class WeightedSnapshot : Snapshot
     {
 
-        /**
-         * A single sample item with value and its weights for {@link WeightedSnapshot}.
-         */
-
-
-        //private static readonly Charset UTF_8 = Charset.forName("UTF-8");
-
         private readonly long[] values;
         private readonly double[] normWeights;
         private readonly double[] quantiles;
 
-        /**
-         * Create a new {@link Snapshot} with the given values.
-         *
-         * @param values    an unordered set of values in the reservoir
-         */
+        /// <summary>
+        /// Creates a new <see cref="Snapshot"/> with the given values
+        /// </summary>
+        /// <param name="values">an unordered set of values in the reservoir</param>
         public WeightedSnapshot(ICollection<WeightedSample> values)
         {
             WeightedSample[] copy = values.ToArray();
@@ -79,12 +76,11 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Returns the value at the given quantile.
-         *
-         * @param quantile    a given quantile, in {@code [0..1]}
-         * @return the value in the distribution at {@code quantile}
-         */
+        /// <summary>
+        /// Returns the value at the given quantile
+        /// </summary>
+        /// <param name="quantile">a given quantile in <c>[0..1]</c></param>
+        /// <returns>the value in the distribution at <c>quantile</c></returns>
         public override double GetValue(double quantile)
         {
             if (quantile < 0.0 || quantile > 1.0 || Double.IsNaN(quantile))
@@ -114,22 +110,17 @@ namespace Metrics.Core
             return values[posx];
         }
 
-        /**
-         * Returns the number of values in the snapshot.
-         *
-         * @return the number of values
-         */
+        /// <summary>
+        /// The number of values in the snapshot
+        /// </summary>
         public override int Size
         {
             get { return values.Length; }
         }
 
-        /**
-         * Returns the entire set of values in the snapshot.
-         *
-         * @return the entire set of values
-         */
-
+        /// <summary>
+        /// The entire set of values in the snapshot
+        /// </summary>
         public override long[] Values
         {
             get
@@ -140,12 +131,9 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Returns the highest value in the snapshot.
-         *
-         * @return the highest value
-         */
-
+        /// <summary>
+        /// The highest value in the snapshot
+        /// </summary>
         public override long Max
         {
             get
@@ -158,12 +146,9 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Returns the lowest value in the snapshot.
-         *
-         * @return the lowest value
-         */
-
+        /// <summary>
+        /// The lowest value in the snapshot
+        /// </summary>
         public override long Min
         {
             get
@@ -176,12 +161,9 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Returns the weighted arithmetic mean of the values in the snapshot.
-         *
-         * @return the weighted arithmetic mean
-         */
-
+        /// <summary>
+        /// The arithmetic mean of the values in the snapshot
+        /// </summary>
         public override double Mean
         {
             get
@@ -200,12 +182,9 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Returns the weighted standard deviation of the values in the snapshot.
-         *
-         * @return the weighted standard deviation value
-         */
-
+        /// <summary>
+        /// The standard deviation of the values in the snapshot
+        /// </summary>
         public override double StdDev
         {
             // two-pass algorithm for variance, avoids numeric overflow
@@ -229,12 +208,10 @@ namespace Metrics.Core
             }
         }
 
-        /**
-         * Writes the values of the snapshot to the given stream.
-         *
-         * @param output an output stream
-         */
-
+        /// <summary>
+        /// Writes the values of the snapshot to the given stream.
+        /// </summary>
+        /// <param name="stream">Stream to which the values are written</param>
         public override void dump(Stream output)
         {
             using (StreamWriter writer = new StreamWriter(output))

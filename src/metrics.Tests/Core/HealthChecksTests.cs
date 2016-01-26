@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Metrics.Health;
+using NUnit.Framework;
 
 namespace Metrics.Tests.Core
 {
@@ -8,8 +9,9 @@ namespace Metrics.Tests.Core
         [Test]
         public void Correctly_Report_When_There_Are_HealthChecks()
         {
-            HealthChecks.Register("test-health-check", () => HealthCheck.Result.Healthy);
-            Assert.That(HealthChecks.HasHealthChecks, Is.True);
+            HealthCheckRegistry registry = new HealthCheckRegistry();
+            registry.Register("test-health-check", new HealthCheck(() => HealthCheck.Result.Healthy()));
+            Assert.That(registry.HasHealthChecks, Is.True);
         }
     }
 }

@@ -6,8 +6,8 @@ namespace Metrics.Stats
     /// <summary>
     ///  An exponentially-weighted moving average
     /// </summary>
-    /// <see href="http://www.teamquest.com/pdfs/whitepaper/ldavg1.pdf"/>
-    /// <see href="http://www.teamquest.com/pdfs/whitepaper/ldavg2.pdf" />
+    /// <see href="http://www.teamquest.com/pdfs/whitepaper/ldavg1.pdf">UNIX Load Average Part 1: How It Works</see>
+    /// <see href="http://www.teamquest.com/pdfs/whitepaper/ldavg2.pdf">UNIX Load Average Part 2: Not Your Average Average</see>
     public class EWMA
     {
         private static readonly int INTERVAL = 5;

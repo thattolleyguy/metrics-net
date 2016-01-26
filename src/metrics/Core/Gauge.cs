@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -14,6 +15,8 @@ namespace Metrics.Core
         {
             this.type = type;
         }
+
+        [JsonIgnore]
         public abstract string ValueAsString { get; }
     }
 
@@ -36,11 +39,12 @@ namespace Metrics.Core
             _evaluator = evaluator;
         }
 
-        public T Value
+        public virtual T Value
         {
             get { return _evaluator.Invoke(); }
         }
 
+        [JsonIgnore]
         public override string ValueAsString
         {
             get { return Value.ToString(); }

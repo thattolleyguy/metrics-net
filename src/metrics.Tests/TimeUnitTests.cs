@@ -87,31 +87,71 @@ namespace Metrics.Tests
             Assert.AreEqual(166, actual);
         }
 
-		[Test]
-		public void Can_convert_minutes_to_milliseconds()
-		{
-			const long duration = 1000;
-			var actual = TimeUnit.Minutes.ToMillis(duration);
-			Trace.WriteLine(actual);
-			Assert.AreEqual(60000000L, actual);
-		}
+        [Test]
+        public void Can_convert_minutes_to_milliseconds()
+        {
+            const long duration = 1000;
+            var actual = TimeUnit.Minutes.ToMillis(duration);
+            Trace.WriteLine(actual);
+            Assert.AreEqual(60000000L, actual);
+        }
 
-		[Test]
-		public void Can_convert_days_to_nanoseconds()
-		{
-			const long duration = 7;
-			var actual = TimeUnit.Days.ToNanos(duration);
-			Trace.WriteLine(actual);
-			long expected = duration * 24 * 60 * 60 * 1000 * 1000 * 1000;
-			Assert.AreEqual(expected, actual);
-		}
+        [Test]
+        public void Can_convert_days_to_nanoseconds()
+        {
+            const long duration = 7;
+            var actual = TimeUnit.Days.ToNanos(duration);
+            Trace.WriteLine(actual);
+            long expected = duration * 24 * 60 * 60 * 1000 * 1000 * 1000;
+            Assert.AreEqual(expected, actual);
+        }
 
-		[Test]
-		public void Can_convert_nanoseconds_to_days()
-		{
-			const long duration = 172800000123456L; // Two days and some change
-			var actual = TimeUnit.Nanoseconds.ToDays(duration);
-			Assert.AreEqual(2, actual);
-		}
+        [Test]
+        public void Can_convert_nanoseconds_to_days()
+        {
+            const long duration = 172800000123456L; // Two days and some change
+            var actual = TimeUnit.Nanoseconds.ToDays(duration);
+            Assert.AreEqual(2, actual);
+        }
+
+        [Test]
+        public void Can_convert_nanoseconds_to_ticks()
+        {
+            const long duration = 1000; // Two days and some change
+            var actual = TimeUnit.Nanoseconds.ToTicks(duration);
+            Assert.AreEqual(10, actual);
+        }
+        [Test]
+        public void Can_convert_ticks_to_nanoseconds()
+        {
+            const long duration = 10; // Two days and some change
+            var actual = TimeUnit.Ticks.ToNanos(duration);
+            Assert.AreEqual(1000, actual);
+        }
+        [Test]
+        public void Can_convert_ticks_to_milliseconds()
+        {
+            const long duration = 10000; // Two days and some change
+            var actual = TimeUnit.Ticks.ToMillis(duration);
+            Assert.AreEqual(1, actual);
+        }
+        [Test]
+        public void Can_convert_ticks_to_seconds()
+        {
+            const long duration = 10000000; // Two days and some change
+            var actual = TimeUnit.Ticks.ToSeconds(duration);
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void Can_convert_minutes_to_hours()
+        {
+            const long duration = 60;
+            var actual = TimeUnit.Minutes.ToHours(duration);
+            Assert.AreEqual(1, actual);
+        }
+
+
+
     }
 }

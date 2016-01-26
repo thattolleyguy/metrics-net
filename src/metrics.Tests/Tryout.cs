@@ -3,6 +3,8 @@ using System.Text;
 using System.Threading;
 using Metrics.Core;
 using Metrics.Reporting;
+using Metrics.CLR;
+using Newtonsoft.Json;
 
 namespace Metrics.Tests
 {
@@ -14,24 +16,31 @@ namespace Metrics.Tests
             var reporter = ConsoleReporter.ForRegistry(db1Metrics).build();
             var meter = db1Metrics.Meter("testMeter");
             var randomHist = db1Metrics.Histogram("testHist");
-            
-            reporter.start(1, TimeUnit.Seconds);
+            //var machineMetrics = MachineMetrics.Create(MachineMetricsCategory.All);
+            //db1Metrics.Register("MachineMetrics", machineMetrics);
 
+            //reporter.Start(1, TimeUnit.Seconds);
+            CsvReporter creporter = CsvReporter.forRegistry(db1Metrics).build("c:\\merchlog");
+            //creporter.Start(1, TimeUnit.Seconds);
 
 
 
             //var docsTimedCounterPerSec = db1Metrics.TimedCounter("db1", "docs new indexed/sec", "new Indexed Documents");
             int i = 0;
-            db1Metrics.Gauge<int>("testGauge",()=>i);
+            db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
             var counter = db1Metrics.Counter("testCounter");
-            for (; i < 1000; i++)
+            for (; i < 100; i++)
             {
                 meter.Mark();
                 counter.Increment(i);
-                randomHist.Update(r.Next(100));
+                randomHist.Update(r.Next(101));
                 Thread.Sleep(100);
+                string metricString = JsonConvert.SerializeObject(db1Metrics.Metrics);
+                Console.WriteLine(metricString);
             }
+
+            
             //Console.WriteLine(docsTimedCounterPerSec.CurrentValue);
 
             /*var RequestsPerSecondHistogram = db1Metrics.Histogram("db1.Request Per Second Histogram");
