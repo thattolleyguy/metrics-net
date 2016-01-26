@@ -1,8 +1,7 @@
 ﻿using Metrics.Core;
-using Metrics.Tests.Core;
 using NUnit.Framework;
 
-namespace Metrics.Tests
+namespace Metrics.Tests.Core
 {
     [TestFixture]
     public class MetricsTests
