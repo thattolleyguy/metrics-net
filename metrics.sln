@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Core", "src\metrics
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Tests", "src\metrics.tests\Metrics.Tests.csproj", "{6DAD9669-E49A-41A2-98F8-D0F4E50CC925}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Graphite", "Metrics.Graphite\Metrics.Graphite.csproj", "{72B67D02-51A4-4E6D-B734-FC277D447BBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,18 @@ Global
 		{6DAD9669-E49A-41A2-98F8-D0F4E50CC925}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6DAD9669-E49A-41A2-98F8-D0F4E50CC925}.Release|x86.ActiveCfg = Release|x86
 		{6DAD9669-E49A-41A2-98F8-D0F4E50CC925}.Release|x86.Build.0 = Release|x86
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Debug|x86.Build.0 = Debug|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|x86.ActiveCfg = Release|Any CPU
+		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

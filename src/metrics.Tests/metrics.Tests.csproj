@@ -8,8 +8,8 @@
     <ProjectGuid>{6DAD9669-E49A-41A2-98F8-D0F4E50CC925}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>metrics.Tests</RootNamespace>
-    <AssemblyName>metrics.Tests</AssemblyName>
+    <RootNamespace>Metrics.Tests</RootNamespace>
+    <AssemblyName>Metrics.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -65,14 +65,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CachedGaugeTests.cs" />
     <Compile Include="Core\CLRProfilerTests.cs" />
+    <Compile Include="Core\DerivativeGaugeTests.cs" />
     <Compile Include="Core\GaugeTests.cs" />
     <Compile Include="Core\HealthChecksTests.cs" />
     <Compile Include="Core\HistogramMetricTests.cs" />
     <Compile Include="Core\MeterTests.cs" />
     <Compile Include="Core\MetricTestBase.cs" />
     <Compile Include="Core\TimerTests.cs" />
-    <Compile Include="MetricsTests.cs" />
+    <Compile Include="Core\MetricsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\CounterTests.cs" />
     <Compile Include="Reporting\ConsoleReporterTests.cs" />
@@ -81,7 +83,7 @@
     <Compile Include="Reporting\SampleFileReporterTests.cs" />
     <Compile Include="Stats\EWMATests.cs" />
     <Compile Include="Support\VolatileDoubleTests.cs" />
-    <Compile Include="TimeUnitTests.cs" />
+    <Compile Include="Support\TimeUnitTests.cs" />
     <Compile Include="Net\MetricsListenerTests.cs" />
     <Compile Include="Tryout.cs" />
   </ItemGroup>
