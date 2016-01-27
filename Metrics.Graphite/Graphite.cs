@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Metrics.Reporting.Graphite
 {
-    class Graphite : GraphiteSender
+    public class Graphite : GraphiteSender
     {
 
         public string Hostname { get; private set; }

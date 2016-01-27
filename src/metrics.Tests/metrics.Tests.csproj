@@ -88,6 +88,10 @@
     <Compile Include="Tryout.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Metrics.Graphite\Metrics.Graphite.csproj">
+      <Project>{72b67d02-51a4-4e6d-b734-fc277d447bba}</Project>
+      <Name>Metrics.Graphite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\metrics\Metrics.Core.csproj">
       <Project>{3FBA902F-4F7E-434D-BE22-89C162B6F92D}</Project>
       <Name>Metrics.Core</Name>

@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Metrics.Core;
 using log4net;
+using Metrics.Util;
 
 namespace Metrics.Reporting.Graphite
 {
-
-
-    class GraphiteReporter : ScheduledReporter
+    public class GraphiteReporter : ScheduledReporter
     {
         /// <summary>
         /// Creates a new <see cref="Builder"/> for <see cref="ConsoleReporter"/>
@@ -144,7 +143,7 @@ namespace Metrics.Reporting.Graphite
             IDictionary<MetricName, Meter> meters,
             IDictionary<MetricName, Timer> timers)
         {
-            long timestamp = clock.CurrentTime / 1000;
+            long timestamp = DateTime.UtcNow.ToUnixTime();
 
             try
             {
@@ -328,5 +327,9 @@ namespace Metrics.Reporting.Graphite
         {
             return v.ToString("F2");
         }
+
+
     }
+
+
 }

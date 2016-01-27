@@ -5,6 +5,7 @@ using Metrics.Core;
 using Metrics.Reporting;
 using Metrics.CLR;
 using Newtonsoft.Json;
+using Metrics.Reporting.Graphite;
 
 namespace Metrics.Tests
 {
@@ -23,6 +24,11 @@ namespace Metrics.Tests
             CsvReporter creporter = CsvReporter.forRegistry(db1Metrics).build("c:\\merchlog");
             //creporter.Start(1, TimeUnit.Seconds);
 
+            Graphite sender = new Graphite("192.168.1.157", 2003);
+            GraphiteReporter greporter = GraphiteReporter.ForRegistry(db1Metrics).Build(sender);
+            greporter.Start(10, TimeUnit.Seconds);
+
+
 
 
             //var docsTimedCounterPerSec = db1Metrics.TimedCounter("db1", "docs new indexed/sec", "new Indexed Documents");
@@ -30,14 +36,13 @@ namespace Metrics.Tests
             db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
             var counter = db1Metrics.Counter("testCounter");
-            for (; i < 100; i++)
+            for (; i < 10000; i++)
             {
                 meter.Mark();
                 counter.Increment(i);
                 randomHist.Update(r.Next(101));
                 Thread.Sleep(100);
-                string metricString = JsonConvert.SerializeObject(db1Metrics.Metrics);
-                Console.WriteLine(metricString);
+
             }
 
             
