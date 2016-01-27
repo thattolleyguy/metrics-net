@@ -1,0 +1,4 @@
+Metrics.Tests.Core.CLRProfilerTests.Can_dump_tracked_threads
+Metrics.Tests.Core.CLRProfilerTests.Can_enumerate_all_counters
+Metrics.Tests.Core.CLRProfilerTests.Can_enumerate_machine_categories
+Metrics.Tests.Core.CLRProfilerTests.Can_get_machine_metrics

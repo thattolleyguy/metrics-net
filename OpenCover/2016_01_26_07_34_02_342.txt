@@ -1,0 +1,1 @@
+Metrics.Tests.Core.HealthChecksTests.Correctly_Report_When_There_Are_HealthChecks

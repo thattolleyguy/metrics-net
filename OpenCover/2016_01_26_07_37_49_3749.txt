@@ -1,0 +1,1 @@
+Metrics.Tests.Core.CLRProfilerTests.Can_dump_tracked_threads
