@@ -143,6 +143,7 @@ namespace Metrics.Reporting.Graphite
             IDictionary<MetricName, Meter> meters,
             IDictionary<MetricName, Timer> timers)
         {
+            
             long timestamp = DateTime.UtcNow.ToUnixTime();
 
             try
@@ -282,18 +283,21 @@ namespace Metrics.Reporting.Graphite
 
         private void reportGauge(MetricName name, Gauge gauge, long timestamp)
         {
-            String value = format(gauge.ValueAsString);
+            string value = format(gauge.ValueAsString);
             if (value != null)
             {
                 graphite.Send(Prefix(name), value, timestamp);
             }
         }
 
-        private String format(Object o)
+        private string format(Object o)
         {
 
-
-            if (o is float || o is double)
+            if(o is string)
+            {
+                return (string)o;
+            }
+            else if (o is float || o is double)
             {
                 return formatDouble((double)o);
             }
@@ -305,7 +309,7 @@ namespace Metrics.Reporting.Graphite
             {
                 return formatLong((long)o);
             }
-            return null;
+            return o.ToString();
         }
 
         private string Prefix(MetricName name, params String[] components)

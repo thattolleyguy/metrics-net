@@ -24,7 +24,7 @@ namespace Metrics.Tests
             CsvReporter creporter = CsvReporter.forRegistry(db1Metrics).build("c:\\merchlog");
             //creporter.Start(1, TimeUnit.Seconds);
 
-            Graphite sender = new Graphite("192.168.1.157", 2003);
+            Graphite sender = new Graphite("ttolley-lap3", 2003);
             GraphiteReporter greporter = GraphiteReporter.ForRegistry(db1Metrics).Build(sender);
             greporter.Start(10, TimeUnit.Seconds);
 
@@ -36,13 +36,18 @@ namespace Metrics.Tests
             db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
             var counter = db1Metrics.Counter("testCounter");
-            for (; i < 10000; i++)
+            for (; i < 1000000; i++)
             {
                 meter.Mark();
                 counter.Increment(i);
                 randomHist.Update(r.Next(101));
-                Thread.Sleep(100);
+                
 
+            }
+            Console.WriteLine("Done counting");
+            for(i=0;i<10;i++)
+            {
+                Thread.Sleep(60000);
             }
 
             

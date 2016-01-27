@@ -86,6 +86,7 @@
     <Compile Include="Support\TimeUnitTests.cs" />
     <Compile Include="Net\MetricsListenerTests.cs" />
     <Compile Include="Tryout.cs" />
+    <Compile Include="Util\UtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Metrics.Graphite\Metrics.Graphite.csproj">
