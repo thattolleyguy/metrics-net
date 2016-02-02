@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Tests", "src\metric
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Graphite", "Metrics.Graphite\Metrics.Graphite.csproj", "{72B67D02-51A4-4E6D-B734-FC277D447BBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrics.Ninject", "Metrics.Ninject\Metrics.Ninject.csproj", "{E2150D40-5E23-4085-9D72-CDDF66698B33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,18 @@ Global
 		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|x86.ActiveCfg = Release|Any CPU
 		{72B67D02-51A4-4E6D-B734-FC277D447BBA}.Release|x86.Build.0 = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Debug|x86.Build.0 = Debug|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|x86.ActiveCfg = Release|Any CPU
+		{E2150D40-5E23-4085-9D72-CDDF66698B33}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

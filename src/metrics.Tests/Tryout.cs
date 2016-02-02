@@ -36,12 +36,12 @@ namespace Metrics.Tests
             db1Metrics.Gauge<int>("testGauge", () => i);
             Random r = new Random();
             var counter = db1Metrics.Counter("testCounter");
-            for (; i < 1000000; i++)
+            for (; i < 10000; i++)
             {
                 meter.Mark();
                 counter.Increment(i);
                 randomHist.Update(r.Next(101));
-                
+                Thread.Sleep(100);
 
             }
             Console.WriteLine("Done counting");
