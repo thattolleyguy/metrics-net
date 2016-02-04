@@ -24,12 +24,7 @@ namespace Metrics.Ninject
         {
             if (timer == null)
             {
-                MetricName metricName = null;
-                if (Absolute)
-                    metricName = new MetricName(Name);
-                else
-                    metricName = new MetricName(request.Target.GetType().FullName + "." + Name);
-
+                MetricName metricName = Utils.BuildName(request, Name, Absolute);
                 MetricRegistry registry = request.Context.Kernel.Get<MetricRegistry>();
                 timer = registry.Timer(metricName);
             }

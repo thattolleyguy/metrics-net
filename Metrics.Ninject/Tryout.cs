@@ -16,6 +16,10 @@ namespace Metrics.Ninject
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(typeof(Exception).IsAssignableFrom(typeof(ArgumentNullException)));
+            Console.WriteLine(typeof(ArgumentNullException).IsAssignableFrom(typeof(Exception)));
+
+
             IKernel kernel = new StandardKernel();
             MetricRegistry registry = new MetricRegistry();
             kernel.Bind<MetricRegistry>().ToConstant<MetricRegistry>(registry);
@@ -33,7 +37,14 @@ namespace Metrics.Ninject
             Random r = new Random();
             for (; i < 10000; i++)
             {
-                t.Test(r.Next(101));
+                try {
+                    t.Test(r.Next(101));
+                }
+                catch
+                {
+                    // Do nothing
+                }
+
             }
 
             Console.WriteLine("Done counting");
@@ -48,9 +59,16 @@ namespace Metrics.Ninject
         [Metered(Name = "Attributes.TestMeterAttribute", Absolute = true)]
         [Counted(Name = "Attributes.TestCountAttribute", Absolute = true)]
         [Timed(Name = "Attributes.TestTimerAttribute", Absolute = true)]
+        [ExceptionMetered(Name = "Attributes.TestGenericExceptionMeteredAttribute",Absolute =true)]
+        [ExceptionMetered(Name = "Attributes.TestArgumentExceptionMeteredAttribute", Absolute = true, ExceptionType = typeof(ArgumentException))]
+        [ExceptionMetered(Name = "Attributes.TestOutOfRangeExceptionMeteredAttribute", Absolute = true, ExceptionType = typeof(IndexOutOfRangeException))]
         public virtual void Test(int timeout)
         {
-                Thread.Sleep(timeout);
+            Thread.Sleep(timeout);
+            if (timeout > 50)
+                throw new ArgumentException("Fun");
+            else
+                throw new IndexOutOfRangeException("Ness");
 
         }
     }

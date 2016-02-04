@@ -18,25 +18,18 @@ namespace Metrics.Ninject
         public bool Absolute { get; set; }
         public bool Monotonic { get; set; }
 
-
-        private Counter counter = null;
-
-
+        private CountingInterceptor interceptor = null;
 
         public override IInterceptor CreateInterceptor(IProxyRequest request)
         {
-            if (counter == null)
+            if (interceptor == null)
             {
-                MetricName metricName = null;
-                if (Absolute)
-                    metricName = new MetricName(Name);
-                else
-                    metricName = new MetricName(request.Target.GetType().FullName + "." + Name);
-
+                MetricName metricName = Utils.BuildName(request, Name, Absolute);
                 MetricRegistry registry = request.Context.Kernel.Get<MetricRegistry>();
-                counter = registry.Counter(metricName);
+                Counter counter = registry.Counter(metricName);
+                interceptor = new CountingInterceptor(counter, Monotonic);
             }
-            return new CountingInterceptor(counter, Monotonic);
+            return interceptor;
         }
     }
 
